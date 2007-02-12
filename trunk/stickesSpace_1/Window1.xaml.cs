@@ -25,6 +25,8 @@ namespace stickesSpace_1
         //Command Events
         public static RoutedCommand CloseCmd = new RoutedCommand();
         public static RoutedCommand MinimizeCmd = new RoutedCommand();
+        public static RoutedCommand RestoreCmd = new RoutedCommand();
+        public static RoutedCommand FitContentCmd = new RoutedCommand();
 
 
         public Window1()
@@ -32,6 +34,12 @@ namespace stickesSpace_1
             InitializeComponent();
         }
 
+
+        public enum SetBindingMode
+        {
+            SetBinding,
+            ClearBinding
+        }
 
 
         void newWindow(object sender, EventArgs e)
@@ -41,6 +49,7 @@ namespace stickesSpace_1
             #region Window
 
             UCWindow newWindow = new UCWindow();
+            newWindow.Name = String.Format("stickyWindow_{0}", DateTime.Now.Ticks);
             newWindow.MinHeight = 50;
             newWindow.MinWidth = 100;
             newWindow.Height = 200;
@@ -49,7 +58,6 @@ namespace stickesSpace_1
             newWindow.Background = Brushes.Transparent;
             newWindow.AllowsTransparency = true;
             newWindow.MouseLeftButtonDown += new MouseButtonEventHandler(newWindow_MouseLeftButtonDown);
-            newWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
 
             newWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(sview_ScrollChanged));
             newWindow.AddHandler(Ellipse.MouseLeftButtonDownEvent, new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown));
@@ -60,22 +68,24 @@ namespace stickesSpace_1
 
             #region Container
 
-            Binding bindWinH = new Binding("ActualHeight");
-            bindWinH.Source = newWindow;
-            Binding bindWinW = new Binding("ActualWidth");
-            bindWinW.Source = newWindow;
-
             Canvas containerCanvas = new Canvas();
-            containerCanvas.Name = "ReflectMe";
-            containerCanvas.SetBinding(Canvas.HeightProperty, bindWinH);
-            containerCanvas.SetBinding(Canvas.WidthProperty, bindWinW);
+            SetContainerCanvasBindings(newWindow, containerCanvas, SetBindingMode.SetBinding);
+            containerCanvas.Name = "Container";
             containerCanvas.Background = Brushes.Transparent;
+            containerCanvas.HorizontalAlignment = HorizontalAlignment.Right;
+            containerCanvas.VerticalAlignment = VerticalAlignment.Bottom;
+            containerCanvas.Margin = new Thickness(0);
 
             #endregion
 
 
 
             #region Border
+
+            Binding bindWinH = new Binding("ActualHeight");
+            bindWinH.Source = containerCanvas;
+            Binding bindWinW = new Binding("ActualWidth");
+            bindWinW.Source = containerCanvas;
 
             Border newBorder = new Border();
             newBorder.SetBinding(Border.HeightProperty, bindWinH);
@@ -104,12 +114,14 @@ namespace stickesSpace_1
 
             #region TextAreea
 
-            RichTextBox rtxtTypeHere = new RichTextBox();
+            TextBox rtxtTypeHere = new TextBox();
             rtxtTypeHere.Name = "txtArea";
             rtxtTypeHere.Background = Brushes.LightBlue;
             rtxtTypeHere.BorderThickness = new Thickness(0);
             rtxtTypeHere.Padding = new Thickness(0,0,10,10);
             rtxtTypeHere.AcceptsTab = true;
+            rtxtTypeHere.AcceptsReturn = true;
+            rtxtTypeHere.TextWrapping = TextWrapping.Wrap;
 
             rtxtTypeHere.MouseDoubleClick += new MouseButtonEventHandler(rtxtTypeHere_MouseDoubleClick);
 
@@ -131,8 +143,8 @@ namespace stickesSpace_1
             MyScrollView sview = new MyScrollView();
             sview.Name = "scroller";
             sview.Content = rtxtTypeHere;
-            sview.SetBinding(RichTextBox.HeightProperty, bindTxtH);
-            sview.SetBinding(RichTextBox.WidthProperty, bindTxtW);
+            sview.SetBinding(TextBox.HeightProperty, bindTxtH);
+            sview.SetBinding(TextBox.WidthProperty, bindTxtW);
             sview.SetValue(Canvas.TopProperty, double.Parse("10"));
             sview.SetValue(Canvas.LeftProperty, double.Parse("10"));
             sview.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
@@ -209,6 +221,34 @@ namespace stickesSpace_1
 
         }
 
+        private void SetContainerCanvasBindings(UCWindow newWindow, Canvas containerCanvas, SetBindingMode bindingMode)
+        {
+            switch (bindingMode)
+            {
+                case SetBindingMode.SetBinding :
+                    Binding bindWinH = new Binding("ActualHeight");
+                    bindWinH.Source = newWindow;
+                    Binding bindWinW = new Binding("ActualWidth");
+                    bindWinW.Source = newWindow;
+                    
+                    containerCanvas.SetBinding(Canvas.HeightProperty, bindWinH);
+                    containerCanvas.SetBinding(Canvas.WidthProperty, bindWinW);
+
+                    newWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
+                    break;
+
+                case SetBindingMode.ClearBinding :
+                    //containerCanvas.Height = newWindow.ActualHeight;
+                    //containerCanvas.Width = newWindow.ActualWidth;
+
+                    //BindingOperations.ClearBinding(containerCanvas, Canvas.HeightProperty);
+                    //BindingOperations.ClearBinding(containerCanvas, Canvas.WidthProperty);
+
+                    //newWindow.ResizeMode = ResizeMode.NoResize;
+                    break;
+            }
+        }
+
 
 
 
@@ -230,11 +270,13 @@ namespace stickesSpace_1
         private ContextMenu GetContextMenu(Window callingWindow)
         {
             ContextMenu menu = new ContextMenu();
-            MenuItem m1, m2;
+            MenuItem m1, m2, m3, m4;
 
             //Commands
             CommandBinding CloseCmdBinding = new CommandBinding(CloseCmd, CloseCmdExecuted, CloseCmdCanExecute);
             CommandBinding MinimizeCmdBinding = new CommandBinding(MinimizeCmd, MinizmizeCmdExecuted, MinizmizeCmdCanExecute);
+            CommandBinding FitContentCmdBinding = new CommandBinding(FitContentCmd, FitContentCmdExecuted, FitContentCmdCanExecute);
+            CommandBinding RestoreCmdBinding = new CommandBinding(RestoreCmd, RestoreCmdExecuted, RestoreCmdCanExecute);
 
             m1 = new MenuItem();
             m1.Header = "Close";
@@ -249,9 +291,22 @@ namespace stickesSpace_1
             m2.Command = MinimizeCmd;
             m2.CommandParameter = callingWindow;
 
+            m3 = new MenuItem();
+            m3.Header = "Restore";
+            m3.CommandBindings.Add(RestoreCmdBinding);
+            m3.Command = RestoreCmd;
+            m3.CommandParameter = callingWindow;
+
+            m4 = new MenuItem();
+            m4.Header = "Fit Content";
+            m4.CommandBindings.Add(FitContentCmdBinding);
+            m4.Command = FitContentCmd;
+            m4.CommandParameter = callingWindow;
 
             menu.Items.Add(m1);
             menu.Items.Add(m2);
+            menu.Items.Add(m3);
+            menu.Items.Add(m4);
 
             return menu;
         }
@@ -265,7 +320,7 @@ namespace stickesSpace_1
         //Close menuCommand
         private void CloseCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Window callingWindow = (Window)e.Parameter;
+            UCWindow callingWindow = (UCWindow)e.Parameter;
             callingWindow.Close();
         }
 
@@ -275,11 +330,121 @@ namespace stickesSpace_1
         }
 
 
+        //Restore menuCommand
+        private void RestoreCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            UCWindow callingWindow = (UCWindow)e.Parameter;
+            MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(callingWindow, "slider");
+
+            double currWidth = callingWindow.ActualWidth;
+            double currHeight = callingWindow.ActualHeight;
+            double newWidth = callingWindow.OriginalSize.Width;
+            double newHeight = callingWindow.OriginalSize.Height;
+
+            DoubleAnimation animHeight = new DoubleAnimation(currHeight, newHeight, new TimeSpan(0, 0, 0, 0, 500));
+            DoubleAnimation animWidth = new DoubleAnimation(currWidth, newHeight, new TimeSpan(0, 0, 0, 0, 500));
+
+            Storyboard.SetTargetName(animHeight, callingWindow.Name);
+            Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
+
+            Storyboard.SetTargetName(animWidth, callingWindow.Name);
+            Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
+
+            Storyboard storyMin = new Storyboard();
+            storyMin.Children.Add(animWidth);
+            storyMin.Children.Add(animHeight);
+
+            storyMin.Begin(this);
+
+            callingWindow.MinHeight = 50;
+            callingWindow.MinWidth = 100;
+            callingWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
+        }
+
+        private void RestoreCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+
+        //FitContent menuCommand
+        private void FitContentCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            UCWindow callingWindow = (UCWindow)e.Parameter;
+            MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(callingWindow, "slider");
+            TextBox txt = (TextBox)LogicalTreeHelper.FindLogicalNode(callingWindow, "txtArea");
+
+            double currWidth = callingWindow.ActualWidth;
+            double currHeight = callingWindow.ActualHeight;
+
+            DoubleAnimation animHeight = new DoubleAnimation(currHeight, txt.ExtentHeight, new TimeSpan(0, 0, 0, 0, 500));
+            DoubleAnimation animWidth = new DoubleAnimation(currWidth, 200, new TimeSpan(0, 0, 0, 0, 500));
+
+            Storyboard.SetTargetName(animHeight, callingWindow.Name);
+            Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
+
+            Storyboard.SetTargetName(animWidth, callingWindow.Name);
+            Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
+
+            Storyboard storyMin = new Storyboard();
+            storyMin.Children.Add(animWidth);
+            storyMin.Children.Add(animHeight);
+
+            storyMin.Begin(this);
+
+            callingWindow.MinHeight = 50;
+            callingWindow.MinWidth = 100;
+            callingWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
+        }
+
+        private void FitContentCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+
         //Minimize menuCommand
         private void MinizmizeCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Window callingWindow = (Window)e.Parameter;
-            //Minimize animation
+            UCWindow callingWindow = (UCWindow)e.Parameter;
+            MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(callingWindow, "slider");
+            Canvas containerCanvas = (Canvas)LogicalTreeHelper.FindLogicalNode(callingWindow, "Container");
+
+            callingWindow.MinHeight = 0;
+            callingWindow.MinWidth = 0;
+            callingWindow.ResizeMode = ResizeMode.NoResize;
+            callingWindow.RenderTransform = new RotateTransform(0, 10, 10);
+            callingWindow.OriginalSize = new Size(callingWindow.ActualWidth, callingWindow.ActualHeight);
+            //SetContainerCanvasBindings(callingWindow, containerCanvas, SetBindingMode.ClearBinding);
+
+
+            double currWidth = callingWindow.ActualWidth;
+            double currHeight = callingWindow.ActualHeight;
+
+            this.RegisterName(callingWindow.Name, callingWindow);
+
+            //DoubleAnimation animSpin = new DoubleAnimation(0, 360, new TimeSpan(0, 0, 0, 0, 500));
+            DoubleAnimation animHeight = new DoubleAnimation(currHeight, 20, new TimeSpan(0, 0, 0, 0, 500));
+            DoubleAnimation animWidth = new DoubleAnimation(currWidth, 20, new TimeSpan(0, 0, 0, 0, 500));
+
+            //Storyboard.SetTargetName(animSpin, callingWindow.Name);
+            //Storyboard.SetTargetProperty(animSpin, new PropertyPath("(0).(1)", 
+            //    new DependencyProperty[] {
+            //        UIElement.RenderTransformProperty,
+            //        RotateTransform.AngleProperty}));
+
+            Storyboard.SetTargetName(animHeight, callingWindow.Name);
+            Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
+
+            Storyboard.SetTargetName(animWidth, callingWindow.Name);
+            Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
+
+            Storyboard storyMin = new Storyboard();
+            //storyMin.Children.Add(animSpin);
+            storyMin.Children.Add(animWidth);
+            storyMin.Children.Add(animHeight);
+
+            storyMin.Begin(this);
         }
 
         private void MinizmizeCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -311,14 +476,14 @@ namespace stickesSpace_1
 
         void rtxtTypeHere_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            RichTextBox rtxtB = (RichTextBox)sender;
+            TextBox rtxtB = (TextBox)sender;
             rtxtB.Focusable = true;
         }
 
 
         void sview_ScrollChanged(object sender, RoutedEventArgs e)
         {
-            Window callingWindow = (Window)sender;
+            UCWindow callingWindow = (UCWindow)sender;
             MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(callingWindow, "slider");
             MyScrollView scroller = (MyScrollView)LogicalTreeHelper.FindLogicalNode(callingWindow, "scroller");
 
@@ -337,7 +502,7 @@ namespace stickesSpace_1
 
         void newWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Window dragWindow = (Window)sender;
+            UCWindow dragWindow = (UCWindow)sender;
             dragWindow.DragMove();
         }
 
@@ -351,6 +516,15 @@ namespace stickesSpace_1
 
     public class UCWindow : Window
     {
+        private Size _OriginalSize;
+
+        public Size OriginalSize
+        {
+            get { return _OriginalSize; }
+            set { _OriginalSize = value; }
+        }
+
+
         protected override Geometry GetLayoutClip(Size ls)
         {
             return null;
