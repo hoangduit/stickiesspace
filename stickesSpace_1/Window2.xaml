@@ -4,6 +4,6 @@
     Title="stickesSpace_1" Height="300" Width="300"
     >
     <Grid>
-        
-    </Grid>
+    <Canvas Height="50" HorizontalAlignment="Right" Margin="0" MinHeight="50" MinWidth="50" Name="canvas1" VerticalAlignment="Bottom" Width="50" />
+  </Grid>
 </Window>
