@@ -1,0 +1,24 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StickyWindow"
+    >
+
+  <Style TargetType="{x:Type local:StickyWindowModel}">
+    <Setter Property="Height" Value="200" />
+    <Setter Property="Width" Value="200" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type local:StickyWindowModel}">
+
+          <Canvas>
+            <Border BorderBrush="Green" BorderThickness="1" CornerRadius="10" Height="200" Width="200">
+              <Button Height="25" Width="100" Content="Blah" />
+            </Border>
+          </Canvas>
+
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>
