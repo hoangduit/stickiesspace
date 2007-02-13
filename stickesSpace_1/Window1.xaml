@@ -8,9 +8,6 @@
       <Label Height="25" Name="lblHit2" VerticalAlignment="Top" HorizontalAlignment="Center">[debug1]</Label>
       <Label Height="25" Name="lblHit" VerticalAlignment="Top" HorizontalAlignment="Center">[debug2]</Label>
       <Button Name="button1" Click="newWindow" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center">Create Sticky</Button>
-      <Button Name="button2" Click="OpenWindow2" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center">Open Window2</Button>
-      
-
     </StackPanel>
   </Grid>
 </Window>

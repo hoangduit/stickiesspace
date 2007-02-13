@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: XmlnsDefinition("http://schemas.conceptualbridge.com/winfx/2006/xaml/presentation", "stickesSpace_1")]
+
 
 //In order to begin building localizable applications, set 
 //<UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file
