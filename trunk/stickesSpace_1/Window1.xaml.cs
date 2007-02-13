@@ -68,8 +68,11 @@ namespace stickesSpace_1
             newWindow.WindowStyle = WindowStyle.None;
             newWindow.Background = Brushes.Transparent;
             newWindow.AllowsTransparency = true;
+            newWindow.MyWindowState = WindowState.Normal;
+
             newWindow.MouseLeftButtonDown += new MouseButtonEventHandler(newWindow_MouseLeftButtonDown);
             newWindow.MouseLeftButtonUp += new MouseButtonEventHandler(newWindow_MouseLeftButtonUp);
+
             newWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(sview_ScrollChanged));
             newWindow.AddHandler(Ellipse.MouseLeftButtonDownEvent, new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown));
 
@@ -119,7 +122,8 @@ namespace stickesSpace_1
             contextCircle.Width = 8;
             contextCircle.SetValue(Canvas.LeftProperty, double.Parse("3"));
             contextCircle.SetValue(Canvas.TopProperty, double.Parse("3"));
-
+            contextCircle.ContextMenu = GetContextMenu(newWindow);
+            
             #endregion
 
 
@@ -236,25 +240,7 @@ namespace stickesSpace_1
 
 
 
-
-
-
-
-
-
         #region LeftClickMenu
-
-        void contextCircle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Window callingWindow = (Window)sender;
-            if (e.Source.GetType() == typeof(Ellipse))
-            {
-                ContextMenu menu = GetContextMenu(callingWindow);
-                menu.IsOpen = true;
-            }
-                
-        }
-
 
         private ContextMenu GetContextMenu(Window callingWindow)
         {
@@ -324,8 +310,14 @@ namespace stickesSpace_1
         {
             UCWindow callingWindow = (UCWindow)e.Parameter;
             MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(callingWindow, "slider");
+            Canvas containerCanvas = (Canvas)LogicalTreeHelper.FindLogicalNode(callingWindow, "Container");
             TextBox txt = (TextBox)LogicalTreeHelper.FindLogicalNode(callingWindow, "txtArea");
 
+            RestoreAnimation(callingWindow, slider, containerCanvas, txt);
+        }
+
+        private void RestoreAnimation(UCWindow callingWindow, MySlider slider, Canvas containerCanvas, TextBox txt)
+        {
             SetTextBoxBindings(txt, SetBindingMode.SetBinding);
             SetContainerCanvasBindings(callingWindow, SetBindingMode.SetBinding);
 
@@ -409,6 +401,11 @@ namespace stickesSpace_1
             Canvas containerCanvas = (Canvas)LogicalTreeHelper.FindLogicalNode(callingWindow, "Container");
             TextBox txt = (TextBox)LogicalTreeHelper.FindLogicalNode(callingWindow, "txtArea");
 
+            MinimizeAnimation(callingWindow, slider, containerCanvas, txt);
+        }
+
+        private void MinimizeAnimation(UCWindow callingWindow, MySlider slider, Canvas containerCanvas, TextBox txt)
+        {
             SetTextBoxBindings(txt, SetBindingMode.ClearBinding);
             SetContainerCanvasBindings(callingWindow, SetBindingMode.SetBinding);
             callingWindow.MinHeight = 0;
@@ -457,10 +454,34 @@ namespace stickesSpace_1
 
         #region Events
 
+        void contextCircle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                UCWindow callingWindow = (UCWindow)sender;
+                MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(callingWindow, "slider");
+                Canvas containerCanvas = (Canvas)LogicalTreeHelper.FindLogicalNode(callingWindow, "Container");
+                TextBox txt = (TextBox)LogicalTreeHelper.FindLogicalNode(callingWindow, "txtArea");
+
+                switch (callingWindow.MyWindowState) 
+                {
+                    case WindowState.Minimized :
+                        RestoreAnimation(callingWindow, slider, containerCanvas, txt);
+                        break;
+
+                    case WindowState.Normal :
+                        MinimizeAnimation(callingWindow, slider, containerCanvas, txt);
+                        break;
+                }
+            }
+        }
+
+
         void sldTxtBox_MouseLeave(object sender, MouseEventArgs e)
         {
             MySlider mySlider = (MySlider)sender;
             AnimateSlider(mySlider, SliderAnimateMode.Hide);
+            e.Handled = true;
         }
 
 
@@ -468,13 +489,15 @@ namespace stickesSpace_1
         {
             MySlider mySlider = (MySlider)sender;
             AnimateSlider(mySlider, SliderAnimateMode.Show);
+            e.Handled = true;
         }
 
 
         void txtTypeHere_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TextBox rtxtB = (TextBox)sender;
-            ActivateTextBox(rtxtB);
+            TextBox txt = (TextBox)sender;
+            ActivateTextBox(txt);
+            e.Handled = true;
         }
 
 
@@ -482,6 +505,7 @@ namespace stickesSpace_1
         {
             TextBox txt = (TextBox)sender;
             DeactivateTextBox(txt);
+            e.Handled = true;
         }
 
 
@@ -492,6 +516,7 @@ namespace stickesSpace_1
             MyScrollView scroller = (MyScrollView)LogicalTreeHelper.FindLogicalNode(callingWindow, "scroller");
 
             HandleScrollChange(callingWindow, slider, scroller);
+            e.Handled = true;
         }
 
 
@@ -511,7 +536,7 @@ namespace stickesSpace_1
 
         void txtTypeHere_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (sender.GetType() == typeof(TextBox))
             {
                 TextBox txt = sender as TextBox;
                 MyScrollView scroller = txt.Parent as MyScrollView;
@@ -520,13 +545,22 @@ namespace stickesSpace_1
 
                 DragWindow(callingWindow);
             }
+            e.Handled = true;
         }
 
 
         void txtTypeHere_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            UCWindow callingWindow = (UCWindow)sender;
-            ResetDragWindow(callingWindow);
+            if (sender.GetType() == typeof(TextBox))
+            {
+                TextBox txt = sender as TextBox;
+                MyScrollView scroller = txt.Parent as MyScrollView;
+                Canvas container = scroller.Parent as Canvas;
+                UCWindow callingWindow = container.Parent as UCWindow;
+
+                ResetDragWindow(callingWindow);
+            }
+            e.Handled = true;
         }
 
         #endregion
