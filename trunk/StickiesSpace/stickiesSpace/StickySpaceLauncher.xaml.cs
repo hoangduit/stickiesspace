@@ -15,6 +15,8 @@ namespace stickiesSpace
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
+    /// 
+    /// http://www.tutorials-ne.com/avalon/Handling-events/
     /// </summary>
 
     public partial class Window1 : System.Windows.Window
@@ -28,9 +30,32 @@ namespace stickiesSpace
         public void CreateStickyWindow(object sender, EventArgs e)
         {
             StickyWindowModel stickyWindow = new StickyWindowModel();
+            stickyWindow.Height = 200;
+            stickyWindow.Width = 200;
+            stickyWindow.MinHeight = 50;
+            stickyWindow.MinWidth = 100;
+            stickyWindow.MyWindowState = WindowState.Normal;
+            stickyWindow.Background = Brushes.Transparent;
             stickyWindow.AllowsTransparency = true;
             stickyWindow.WindowStyle = WindowStyle.None;
+            stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
+
+            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
+
             stickyWindow.Show();
         }
+
+
+        #region Events
+
+        public void stickyWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            StickyWindowModel callingWindow = (StickyWindowModel)sender;
+            callingWindow.DragMove();
+        }
+
+
+        #endregion
+
     }
 }

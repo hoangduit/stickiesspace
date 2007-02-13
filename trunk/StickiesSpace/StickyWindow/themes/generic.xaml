@@ -1,20 +1,56 @@
-<ResourceDictionary
+<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:StickyWindow"
+    xmlns:cvrt="clr-namespace:LearnWPF.Converters"
+    xmlns:e="clr-namespace:stickiesSpace"
     >
 
+
+  <cvrt:ArithmeticConverter x:Key="AC"/>
+
+
   <Style TargetType="{x:Type local:StickyWindowModel}">
+    
     <Setter Property="Height" Value="200" />
     <Setter Property="Width" Value="200" />
+    <Setter Property="MinHeight" Value="50" />
+    <Setter Property="MinWidth" Value="100" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="MyWindowState" Value="Normal" />
+    
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:StickyWindowModel}">
 
-          <Canvas>
-            <Border BorderBrush="Green" BorderThickness="1" CornerRadius="10" Height="200" Width="200">
-              <Button Height="25" Width="100" Content="Blah" />
-            </Border>
+          <Canvas x:Name="container"  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Height="200"
+                  Width="200" >
+
+            <Border x:Name="border" BorderBrush="Red" BorderThickness="10" CornerRadius="5"
+                    Height="{Binding Path=ActualHeight, ElementName=container}"
+                    Width="{Binding Path=ActualWidth, ElementName=container}" />
+            
+            <Ellipse x:Name="contextCircle" Fill="Gray" Height="8" Width="8" Canvas.Left="3" Canvas.Top="3" />
+
+            <ScrollViewer x:Name="scroller" Canvas.Top="10" Canvas.Left="10" VerticalScrollBarVisibility="Hidden"
+                          Height="{Binding Path=ActualHeight, ElementName=container,
+                                            Converter={StaticResource AC},
+                                            ConverterParameter=Int32.Parse(-10)}"
+                          Width="{Binding Path=ActualWidth, ElementName=container,
+                                            Converter={StaticResource AC},
+                                            ConverterParameter=Int32.Parse(-10)}" >
+
+              <TextBox x:Name="txtArea" Background="Lightblue" Padding="0,0,10,10" BorderThickness="0"
+                       AcceptsTab="true" AcceptsReturn="true" TextWrapping="Wrap"  />
+
+            </ScrollViewer>
+
+            <Slider x:Name="slider" Orientation="Vertical" Width="13" Background="Transparent"
+                    Canvas.Right="-0" Canvas.Top="15" IsDirectionReversed="true" Minimum="0" 
+                    Height="{Binding Path=ActualHeight, ElementName=scroller,
+                                      Converter={StaticResource AC},
+                                      ConverterParameter=Int32.Parse(-25)}" />
           </Canvas>
 
         </ControlTemplate>
