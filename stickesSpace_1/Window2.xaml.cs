@@ -24,5 +24,12 @@ namespace stickesSpace_1
             InitializeComponent();
         }
 
+        public void CreateWindow(object sender, EventArgs e)
+        {
+            Window newWindow = new Window();
+            newWindow.ContentTemplate = this.Resources["windowTemplate"] as DataTemplate;
+            newWindow.Show();
+
+        }
     }
 }

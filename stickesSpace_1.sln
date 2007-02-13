@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stickesSpace_1", "stickesSpace_1\stickesSpace_1.csproj", "{8CD32950-0C87-4CE3-B0EE-E7DC79560D3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stickesSpace_1", "stickesSpace_1\stickesSpace.csproj", "{8CD32950-0C87-4CE3-B0EE-E7DC79560D3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
