@@ -1,0 +1,12 @@
+﻿<cc:StickyWindow x:Class="stickesSpace_1.Window2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cc="http://schemas.conceptualbridge.com/winfx/2006/xaml/presentation" 
+    Title="stickesSpace_1" Height="300" Width="300" Name="window2">
+
+  
+  <Grid>
+    <Button Content="Create templated window" Click="CreateWindow"></Button>
+  </Grid>
+  
+</cc:StickyWindow>
