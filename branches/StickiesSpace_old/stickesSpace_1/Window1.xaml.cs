@@ -40,11 +40,6 @@ namespace stickesSpace_1
             InitializeComponent();
         }
 
-        public void OpenWindow2(object sender, EventArgs e)
-        {
-            Window2 win2 = new Window2();
-            win2.Show();
-        }
 
         public enum SetBindingMode
         {
