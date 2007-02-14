@@ -6,34 +6,64 @@
     xmlns:e="clr-namespace:stickiesSpace"
     >
 
-
+  <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#ddd" />
+  <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
+  
   <cvrt:ArithmeticConverter x:Key="AC"/>
 
+  <Style TargetType="ContextMenu">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Grid.IsSharedSizeScope" Value="true"/>
+    <Setter Property="HasDropShadow" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ContextMenu">
+          <Border
+            Name="Border"
+            Background="{StaticResource WindowBackgroundBrush}"
+            BorderBrush="{StaticResource SolidBorderBrush}"
+            BorderThickness="2" >
+            <StackPanel IsItemsHost="True"
+                        KeyboardNavigation.DirectionalNavigation="Cycle"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="HasDropShadow" Value="true">
+              <Setter TargetName="Border" Property="Padding" Value="0,3,0,3"/>
+              <Setter TargetName="Border" Property="CornerRadius" Value="10"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
+  
   <Style TargetType="{x:Type local:StickyWindowModel}">
-    
+
     <Setter Property="Height" Value="200" />
     <Setter Property="Width" Value="200" />
     <Setter Property="MinHeight" Value="50" />
     <Setter Property="MinWidth" Value="100" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="MyWindowState" Value="Normal" />
-    
+    <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:StickyWindowModel}">
 
           <Canvas x:Name="container"  HorizontalAlignment="Left" VerticalAlignment="Top"
-                  Height="200"
-                  Width="200" >
+                  Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                  Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" >
 
             <Border x:Name="border" BorderBrush="Red" BorderThickness="10" CornerRadius="5"
                     Height="{Binding Path=ActualHeight, ElementName=container}"
                     Width="{Binding Path=ActualWidth, ElementName=container}" />
-            
+
             <Ellipse x:Name="contextCircle" Fill="Gray" Height="8" Width="8" Canvas.Left="3" Canvas.Top="3" />
 
-            <ScrollViewer x:Name="scroller" Canvas.Top="10" Canvas.Left="10" VerticalScrollBarVisibility="Hidden"
+            <local:MyScrollViewer x:Name="scroller" Canvas.Top="10" Canvas.Left="10" VerticalScrollBarVisibility="Hidden"
                           Height="{Binding Path=ActualHeight, ElementName=container,
                                             Converter={StaticResource AC},
                                             ConverterParameter=Int32.Parse(-10)}"
@@ -41,20 +71,48 @@
                                             Converter={StaticResource AC},
                                             ConverterParameter=Int32.Parse(-10)}" >
 
-              <TextBox x:Name="txtArea" Background="Lightblue" Padding="0,0,10,10" BorderThickness="0"
-                       AcceptsTab="true" AcceptsReturn="true" TextWrapping="Wrap"  />
+              <TextBox x:Name="txtArea" Background="LightBlue" Padding="0,0,10,10" BorderThickness="0"
+                       AcceptsTab="True" AcceptsReturn="True" TextWrapping="Wrap"  />
 
-            </ScrollViewer>
+            </local:MyScrollViewer>
 
-            <Slider x:Name="slider" Orientation="Vertical" Width="13" Background="Transparent"
-                    Canvas.Right="-0" Canvas.Top="15" IsDirectionReversed="true" Minimum="0" 
+            <local:MySlider x:Name="slider" Orientation="Vertical" Width="13" Background="Transparent"
+                    Canvas.Right="-35" Canvas.Top="15" IsDirectionReversed="True" Minimum="0"
                     Height="{Binding Path=ActualHeight, ElementName=scroller,
                                       Converter={StaticResource AC},
-                                      ConverterParameter=Int32.Parse(-25)}" />
+                                      ConverterParameter=Int32.Parse(-25)}" 
+                    Value="{Binding Path=MyVerticalOffset, ElementName=scroller}" />
+
+            <ResizeGrip x:Name="WindowResizeGrip" Canvas.Right="0" Canvas.Bottom="0" Visibility="Collapsed" IsTabStop="False"/>
+
           </Canvas>
+
+          <ControlTemplate.Triggers>
+            <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+              <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
 
         </ControlTemplate>
       </Setter.Value>
     </Setter>
   </Style>
+
+
+  <Storyboard x:Key="{ComponentResourceKey {x:Type Storyboard}, animationsMinimize}">
+    <DoubleAnimation
+      Storyboard.TargetName="stickyWindow"
+      Storyboard.TargetProperty="Window.HeightProperty"
+      From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
+      To="10"
+      Duration="0:0:0.5" />
+    <DoubleAnimation
+      Storyboard.TargetName="stickyWindow"
+      Storyboard.TargetProperty="Window.WidthProperty"
+      From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+      To="10"
+      Duration="0:0:0.5" />
+  </Storyboard>
+
+  
 </ResourceDictionary>

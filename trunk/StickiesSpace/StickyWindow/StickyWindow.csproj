@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="ArithmeticConverter.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="MyScrollViewer.cs" />
+    <Compile Include="MySlider.cs" />
+    <Compile Include="MyTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

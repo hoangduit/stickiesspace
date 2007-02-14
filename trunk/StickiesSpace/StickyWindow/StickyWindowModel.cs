@@ -13,9 +13,10 @@ using System.Windows.Shapes;
 
 namespace StickyWindow
 {
-
+    
     public class StickyWindowModel : Window
     {
+
         static StickyWindowModel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StickyWindowModel), new FrameworkPropertyMetadata(typeof(StickyWindowModel)));
@@ -23,6 +24,8 @@ namespace StickyWindow
 
 
         #region Properties
+
+        #region Custom Properties
 
         public WindowState MyWindowState
         {
@@ -41,6 +44,42 @@ namespace StickyWindow
             get { return (TextBoxActiveState)GetValue(PreviousTextBoxStateProperty); }
             set { SetValue(PreviousTextBoxStateProperty, value); }
         }
+
+        #endregion
+
+        #region UIElement Properties
+
+        public Canvas sContainer
+        {
+            get { return this.Template.FindName("container", this) as Canvas; }
+        }
+
+        public Border sBorder
+        {
+            get { return this.Template.FindName("border", this) as Border; }
+        }
+
+        public Ellipse sContextCircle
+        {
+            get { return this.Template.FindName("contextCircle", this) as Ellipse; }
+        }
+
+        public MyScrollViewer sScroller 
+        {
+            get { return this.Template.FindName("scroller", this) as MyScrollViewer; }
+        }
+
+        public TextBox sTextArea
+        {
+            get { return this.Template.FindName("txtArea", this) as TextBox;  }
+        }
+
+        public MySlider sSlider
+        {
+            get { return this.Template.FindName("slider", this) as MySlider; }
+        }
+
+        #endregion
 
         #endregion
 
@@ -67,5 +106,9 @@ namespace StickyWindow
 
         #endregion
 
+
     }
+
+
+    
 }
