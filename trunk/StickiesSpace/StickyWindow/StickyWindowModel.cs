@@ -39,12 +39,6 @@ namespace StickyWindow
             set { SetValue(OriginalSizeProperty, value); }
         }
 
-        public TextBoxActiveState PreviousTextBoxState
-        {
-            get { return (TextBoxActiveState)GetValue(PreviousTextBoxStateProperty); }
-            set { SetValue(PreviousTextBoxStateProperty, value); }
-        }
-
         #endregion
 
         #region UIElement Properties
@@ -69,9 +63,9 @@ namespace StickyWindow
             get { return this.Template.FindName("scroller", this) as MyScrollViewer; }
         }
 
-        public TextBox sTextArea
+        public MyTextBox sTextArea
         {
-            get { return this.Template.FindName("txtArea", this) as TextBox;  }
+            get { return this.Template.FindName("txtArea", this) as MyTextBox;  }
         }
 
         public MySlider sSlider
@@ -93,19 +87,71 @@ namespace StickyWindow
             FrameworkPropertyMetadataOptions.Inherits));
 
         public static DependencyProperty OriginalSizeProperty = DependencyProperty.Register("OriginalSize", typeof(Size), typeof(Window),
-            new FrameworkPropertyMetadata(new Size(100,50), FrameworkPropertyMetadataOptions.AffectsMeasure |
-            FrameworkPropertyMetadataOptions.AffectsRender |
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
-            FrameworkPropertyMetadataOptions.Inherits));
-
-        public static DependencyProperty PreviousTextBoxStateProperty = DependencyProperty.Register("PreviousTextBoxState", typeof(TextBoxActiveState), typeof(Window),
-            new FrameworkPropertyMetadata(TextBoxActiveState.Active, FrameworkPropertyMetadataOptions.AffectsMeasure |
+            new FrameworkPropertyMetadata(new Size(200,200), FrameworkPropertyMetadataOptions.AffectsMeasure |
             FrameworkPropertyMetadataOptions.AffectsRender |
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
             FrameworkPropertyMetadataOptions.Inherits));
 
         #endregion
 
+
+
+        public void StartDrag()
+        {
+            //Break Canvas bindings
+            SetContainerCanvasBindings(SetBindingMode.ClearBinding);
+
+            //Resize Window
+
+            //Show/Animate DropShadow
+
+            this.DragMove();
+        }
+
+
+        public void ReleaseDrag()
+        {
+            //Hide/Animate DropShadow
+
+            //Resize Window
+
+            //Restore Canvas Bindings
+            SetContainerCanvasBindings(SetBindingMode.SetBinding);
+        }
+
+
+        public void SetContainerCanvasBindings(SetBindingMode bindingMode)
+        {
+            Canvas containerCanvas = this.sContainer;
+
+            switch (bindingMode)
+            {
+                case SetBindingMode.SetBinding:
+                    Binding bindWinH = new Binding("ActualHeight");
+                    bindWinH.Source = this;
+                    Binding bindWinW = new Binding("ActualWidth");
+                    bindWinW.Source = this;
+
+                    containerCanvas.SetBinding(Canvas.HeightProperty, bindWinH);
+                    containerCanvas.SetBinding(Canvas.WidthProperty, bindWinW);
+
+                    if (this.MyWindowState != WindowState.Minimized)
+                    {
+                        //this.ResizeMode = ResizeMode.CanResizeWithGrip;
+                    }
+                    break;
+
+                case SetBindingMode.ClearBinding:
+                    containerCanvas.Height = this.ActualHeight;
+                    containerCanvas.Width = this.ActualWidth;
+
+                    BindingOperations.ClearBinding(containerCanvas, Canvas.HeightProperty);
+                    BindingOperations.ClearBinding(containerCanvas, Canvas.WidthProperty);
+
+                    //this.ResizeMode = ResizeMode.NoResize;
+                    break;
+            }
+        }
 
     }
 

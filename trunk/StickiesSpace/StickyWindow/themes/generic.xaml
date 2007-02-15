@@ -53,9 +53,12 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:StickyWindowModel}">
 
-          <Canvas x:Name="container"  HorizontalAlignment="Left" VerticalAlignment="Top"
-                  Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                  Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" >
+          <Canvas x:Name="container"  HorizontalAlignment="Left" VerticalAlignment="Top">
+
+            <!--Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"-->
+            <!--Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"-->
+            
+
 
             <Border x:Name="border" BorderBrush="Red" BorderThickness="10" CornerRadius="5"
                     Height="{Binding Path=ActualHeight, ElementName=container}"
@@ -71,8 +74,8 @@
                                             Converter={StaticResource AC},
                                             ConverterParameter=Int32.Parse(-10)}" >
 
-              <TextBox x:Name="txtArea" Background="LightBlue" Padding="0,0,10,10" BorderThickness="0"
-                       AcceptsTab="True" AcceptsReturn="True" TextWrapping="Wrap"  />
+              <local:MyTextBox x:Name="txtArea" Background="LightBlue" Padding="0,0,10,10" BorderThickness="0"
+                       AcceptsTab="True" AcceptsReturn="True" TextWrapping="Wrap"  ActiveState="Active" PreviousActiveState="Active"/>
 
             </local:MyScrollViewer>
 
@@ -87,32 +90,64 @@
 
           </Canvas>
 
+          
           <ControlTemplate.Triggers>
             <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
               <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible"/>
             </Trigger>
           </ControlTemplate.Triggers>
 
+          
+          <ControlTemplate.Resources>
+            
+            <Storyboard x:Key="animationsMinimize">
+              <DoubleAnimation
+                Storyboard.TargetProperty="(Window.Height)"
+                From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                To="20"
+                Duration="0:0:0.25" />
+              <DoubleAnimation
+                Storyboard.TargetProperty="(Window.Width)"
+                From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                To="20"
+                Duration="0:0:0.25" />
+            </Storyboard>
+
+            <Storyboard x:Key="animationsRestore">
+              <DoubleAnimation
+                Storyboard.TargetProperty="(Window.Height)"
+                From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                To="{Binding Path=OriginalSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
+                Duration="0:0:0.25" />
+              <DoubleAnimation
+                Storyboard.TargetProperty="(Window.Width)"
+                From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                To="{Binding Path=OriginalSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                Duration="0:0:0.25" />
+            </Storyboard>
+
+            <Storyboard x:Key="animationsFitContent">
+              <DoubleAnimation
+                Storyboard.TargetProperty="(Window.Height)"
+                From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                Duration="0:0:0.25" />
+              <DoubleAnimation
+                Storyboard.TargetProperty="(Window.Width)"
+                From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                To="200"
+                Duration="0:0:0.25" />
+            </Storyboard>
+            
+          </ControlTemplate.Resources>
+
+          
         </ControlTemplate>
       </Setter.Value>
     </Setter>
   </Style>
 
 
-  <Storyboard x:Key="{ComponentResourceKey {x:Type Storyboard}, animationsMinimize}">
-    <DoubleAnimation
-      Storyboard.TargetName="stickyWindow"
-      Storyboard.TargetProperty="Window.HeightProperty"
-      From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-      To="10"
-      Duration="0:0:0.5" />
-    <DoubleAnimation
-      Storyboard.TargetName="stickyWindow"
-      Storyboard.TargetProperty="Window.WidthProperty"
-      From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-      To="10"
-      Duration="0:0:0.5" />
-  </Storyboard>
 
-  
+
+
 </ResourceDictionary>

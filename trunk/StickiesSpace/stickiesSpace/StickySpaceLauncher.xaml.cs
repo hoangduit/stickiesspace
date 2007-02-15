@@ -22,6 +22,7 @@ namespace stickiesSpace
     {
 
         StickyWindowCommands commands = new StickyWindowCommands();
+        StickyWindowAnimations animations = new StickyWindowAnimations();
 
         public Window1()
         {
@@ -45,8 +46,8 @@ namespace stickiesSpace
             stickyWindow.AllowsTransparency = true;
             stickyWindow.WindowStyle = WindowStyle.None;
 
-
             stickyWindow.Show();
+            stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
 
             #endregion
 
@@ -57,7 +58,7 @@ namespace stickiesSpace
             Border border = stickyWindow.sBorder;
             Ellipse contextCircle = stickyWindow.sContextCircle;
             MyScrollViewer scroller = stickyWindow.sScroller;
-            TextBox txt = stickyWindow.sTextArea;
+            MyTextBox txt = stickyWindow.sTextArea;
             MySlider slider = stickyWindow.sSlider;
 
             #endregion
@@ -65,10 +66,17 @@ namespace stickiesSpace
 
             #region Event Wireup
 
-            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
-            stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
             slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
             slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+
+            stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
+            stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
+            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
+
+            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+
+            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
 
             #endregion
 
@@ -82,76 +90,105 @@ namespace stickiesSpace
 
         #region Events
 
+        void stickyWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            StickyWindowModel stickyWindow = new StickyWindowModel();
+
+            if (sender.GetType() == typeof(StickyWindowModel))
+            {
+                stickyWindow = sender as StickyWindowModel;
+            }
+            else if (sender.GetType() == typeof(MyTextBox))
+            {
+                MyTextBox txt = sender as MyTextBox;
+                stickyWindow = txt.TemplatedParent as StickyWindowModel;
+            }
+
+            stickyWindow.StartDrag();
+        }
+
+        void stickyWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            lblHit.Content += ";";
+
+            StickyWindowModel stickyWindow = new StickyWindowModel();
+
+            if (sender.GetType() == typeof(StickyWindowModel))
+            {
+                stickyWindow = sender as StickyWindowModel;
+            }
+            else if (sender.GetType() == typeof(MyTextBox))
+            {
+                MyTextBox txt = sender as MyTextBox;
+                stickyWindow = txt.TemplatedParent as StickyWindowModel;
+            }
+
+            stickyWindow.ReleaseDrag();
+        }
+
+        
+        void txt_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            MyTextBox txt = sender as MyTextBox;
+            txt.ActiveState = TextBoxActiveState.Inactive;
+        }
+
+        void txt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MyTextBox txt = sender as MyTextBox;
+            txt.ActiveState = TextBoxActiveState.Active;
+        }
+
+        void contextCircle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                Ellipse contextCircle = (Ellipse)sender as Ellipse;
+                StickyWindowModel stickyWindow = contextCircle.TemplatedParent as StickyWindowModel;
+
+                switch (stickyWindow.MyWindowState)
+                {
+                    case WindowState.Minimized:
+                        animations.RestoreAnimation(stickyWindow);
+                        break;
+
+                    case WindowState.Normal:
+                        animations.MinimizeAnimation(stickyWindow);
+                        break;
+                }
+            }
+            e.Handled = true;
+        }
+
         void slider_MouseLeave(object sender, MouseEventArgs e)
         {
             MySlider slider = (MySlider)sender;
-            AnimateSlider(slider, SliderAnimateMode.Hide);
+            slider.AnimateSlider(SliderAnimateMode.Hide);
             e.Handled = true;
         }
 
         void slider_MouseEnter(object sender, MouseEventArgs e)
         {
             MySlider slider = (MySlider)sender;
-            AnimateSlider(slider, SliderAnimateMode.Show);
+            slider.AnimateSlider(SliderAnimateMode.Show);
             e.Handled = true;
         }
 
         void scroller_ScrollChanged(object sender, RoutedEventArgs e)
         {
             StickyWindowModel stickyWindow = (StickyWindowModel)sender;
-            HandleScrollChange(stickyWindow);
+            MySlider slider = stickyWindow.sSlider;
+            slider.HandleScrollChange(stickyWindow);
             e.Handled = true;
         }
 
-        public void stickyWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            StickyWindowModel stickyWindow = (StickyWindowModel)sender;
-            stickyWindow.DragMove();
-        }
+
 
         #endregion
 
 
         #region Slider Helpers
 
-        private void HandleScrollChange(StickyWindowModel stickyWindow)
-        {
-            MySlider slider = stickyWindow.sSlider;
-            MyScrollViewer scroller = stickyWindow.sScroller;
-
-            if (scroller.ExtentHeight > scroller.Height && stickyWindow.MyWindowState == WindowState.Normal)
-                slider.MyVisibility = Visibility.Visible;
-            else
-                slider.MyVisibility = Visibility.Hidden;
-
-            slider.Value = scroller.MyVerticalOffset;
-            slider.Maximum = scroller.ExtentHeight;
-
-            lblHit.Content = String.Format("{0}, {1}", slider.Maximum, scroller.ExtentHeight);
-            lblHit2.Content = String.Format("{0}", slider.Value);
-        }
-
-        private void AnimateSlider(MySlider slider, SliderAnimateMode sliderAnimateMode)
-        {
-            double slideFrom = 0;
-            double slideTo = 0;
-
-            switch (sliderAnimateMode)
-            {
-                case SliderAnimateMode.Show:
-                    slideFrom = (double)slider.GetValue(Canvas.RightProperty);
-                    slideTo = 0;
-                    break;
-
-                case SliderAnimateMode.Hide:
-                    slideFrom = (double)slider.GetValue(Canvas.RightProperty);
-                    slideTo = -5;
-                    break;
-            }
-
-            slider.BeginAnimation(Canvas.RightProperty,
-                new DoubleAnimation(slideFrom, slideTo, new TimeSpan(0, 0, 0, 0, 250)));
-        }
 
         #endregion
 

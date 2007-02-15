@@ -24,6 +24,11 @@ namespace stickiesSpace
             ContextMenu menu = new ContextMenu();
             MenuItem m1, m2, m3, m4, m5;
 
+            
+            //TODO Fix Keygestures!
+            CloseCmd.InputGestures.Add(new KeyGesture(Key.T, ModifierKeys.Control));
+
+
             //Commands
             CommandBinding CloseCmdBinding = new CommandBinding(CloseCmd, CloseCmdExecuted, CloseCmdCanExecute);
             CommandBinding MinimizeCmdBinding = new CommandBinding(MinimizeCmd, MinizmizeCmdExecuted, MinizmizeCmdCanExecute);
@@ -31,11 +36,14 @@ namespace stickiesSpace
             CommandBinding RestoreCmdBinding = new CommandBinding(RestoreCmd, RestoreCmdExecuted, RestoreCmdCanExecute);
             CommandBinding PrintCmdBinding = new CommandBinding(PrintCmd, PrintCmdExecuted, PrintCmdCanExecute);
 
+
+
             m1 = new MenuItem();
             m1.Header = "Close";
             m1.CommandBindings.Add(CloseCmdBinding);
             m1.Command = CloseCmd;
             m1.CommandParameter = stickyWindow;
+            m1.InputGestureText = "Ctrl-T";
 
             m2 = new MenuItem();
             m2.Header = "Minimize";
@@ -88,43 +96,8 @@ namespace stickiesSpace
         //Restore menuCommand
         protected void RestoreCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            //StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
-            //MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(stickyWindow, "slider");
-            //Canvas containerCanvas = (Canvas)LogicalTreeHelper.FindLogicalNode(stickyWindow, "Container");
-            //TextBox txt = (TextBox)LogicalTreeHelper.FindLogicalNode(stickyWindow, "txtArea");
-
-            //RestoreAnimation(stickyWindow, slider, containerCanvas, txt);
-        }
-
-        protected void RestoreAnimation(StickyWindowModel stickyWindow, MySlider slider, Canvas containerCanvas, TextBox txt)
-        {
-            //SetTextBoxBindings(txt, SetBindingMode.SetBinding);
-            //SetContainerCanvasBindings(stickyWindow, SetBindingMode.SetBinding);
-
-            //double currWidth = stickyWindow.ActualWidth;
-            //double currHeight = stickyWindow.ActualHeight;
-            //double newWidth = stickyWindow.OriginalSize.Width;
-            //double newHeight = stickyWindow.OriginalSize.Height;
-
-            //DoubleAnimation animHeight = new DoubleAnimation(currHeight, newHeight, new TimeSpan(0, 0, 0, 0, 250));
-            //DoubleAnimation animWidth = new DoubleAnimation(currWidth, newHeight, new TimeSpan(0, 0, 0, 0, 250));
-
-            //Storyboard.SetTargetName(animHeight, stickyWindow.Name);
-            //Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
-
-            //Storyboard.SetTargetName(animWidth, stickyWindow.Name);
-            //Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
-
-            //Storyboard storyMin = new Storyboard();
-            //storyMin.Children.Add(animWidth);
-            //storyMin.Children.Add(animHeight);
-
-            //storyMin.Begin(this);
-
-            //stickyWindow.MinHeight = 50;
-            //stickyWindow.MinWidth = 100;
-            //stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
-            //stickyWindow.MyWindowState = WindowState.Normal;
+            StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
+            animations.RestoreAnimation(stickyWindow);
         }
 
         protected void RestoreCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -136,35 +109,8 @@ namespace stickiesSpace
         //FitContent menuCommand
         protected void FitContentCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            //StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
-            //MySlider slider = (MySlider)LogicalTreeHelper.FindLogicalNode(stickyWindow, "slider");
-            //TextBox txt = (TextBox)LogicalTreeHelper.FindLogicalNode(stickyWindow, "txtArea");
-
-            //SetTextBoxBindings(txt, SetBindingMode.SetBinding);
-            //SetContainerCanvasBindings(stickyWindow, SetBindingMode.SetBinding);
-
-            //double currWidth = stickyWindow.ActualWidth;
-            //double currHeight = stickyWindow.ActualHeight;
-
-            //DoubleAnimation animHeight = new DoubleAnimation(currHeight, txt.ExtentHeight + 50, new TimeSpan(0, 0, 0, 0, 250));
-            //DoubleAnimation animWidth = new DoubleAnimation(currWidth, 200, new TimeSpan(0, 0, 0, 0, 250));
-
-            //Storyboard.SetTargetName(animHeight, stickyWindow.Name);
-            //Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
-
-            //Storyboard.SetTargetName(animWidth, stickyWindow.Name);
-            //Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
-
-            //Storyboard storyMin = new Storyboard();
-            //storyMin.Children.Add(animWidth);
-            //storyMin.Children.Add(animHeight);
-
-            //storyMin.Begin(this);
-
-            //stickyWindow.MinHeight = 50;
-            //stickyWindow.MinWidth = 100;
-            //stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
-            //stickyWindow.MyWindowState = WindowState.Normal;
+            StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
+            animations.FitContentAnimation(stickyWindow);
         }
 
         protected void FitContentCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -179,8 +125,6 @@ namespace stickiesSpace
             StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
             animations.MinimizeAnimation(stickyWindow);
         }
-
-
 
         protected void MinizmizeCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {

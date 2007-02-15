@@ -16,6 +16,7 @@ namespace StickyWindow
 {
     public class MySlider : Slider
     {
+
         public Visibility MyVisibility
         {
             get
@@ -24,7 +25,6 @@ namespace StickyWindow
                     return Visibility.Visible;
                 else
                     return Visibility.Hidden;
-
             }
             set
             {
@@ -43,6 +43,7 @@ namespace StickyWindow
             }
         }
 
+
         private void AnimateSliderPeek(MySlider mySlider, Visibility vis)
         {
             switch (vis)
@@ -59,5 +60,43 @@ namespace StickyWindow
                     break;
             }
         }
+
+
+        public void HandleScrollChange(StickyWindowModel stickyWindow)
+        {
+            MyScrollViewer scroller = stickyWindow.sScroller;
+
+            if (scroller.ExtentHeight > scroller.Height && stickyWindow.MyWindowState == WindowState.Normal)
+                this.MyVisibility = Visibility.Visible;
+            else
+                this.MyVisibility = Visibility.Hidden;
+
+            this.Value = scroller.MyVerticalOffset;
+            this.Maximum = scroller.ExtentHeight;
+        }
+
+
+        public void AnimateSlider(SliderAnimateMode sliderAnimateMode)
+        {
+            double slideFrom = 0;
+            double slideTo = 0;
+
+            switch (sliderAnimateMode)
+            {
+                case SliderAnimateMode.Show:
+                    slideFrom = (double)this.GetValue(Canvas.RightProperty);
+                    slideTo = 0;
+                    break;
+
+                case SliderAnimateMode.Hide:
+                    slideFrom = (double)this.GetValue(Canvas.RightProperty);
+                    slideTo = -5;
+                    break;
+            }
+
+            this.BeginAnimation(Canvas.RightProperty,
+                new DoubleAnimation(slideFrom, slideTo, new TimeSpan(0, 0, 0, 0, 250)));
+        }
+
     }
 }
