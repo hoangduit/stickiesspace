@@ -66,23 +66,46 @@ namespace stickiesSpace
 
             #region Event Wireup
 
-            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
-            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+            //slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
+            //slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
 
-            stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
-            stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
-            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
+            //stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
+            //stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
+            //stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
 
-            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+            //contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
 
-            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            //txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            //txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            //txt.MouseLeftButtonDown += new MouseButtonEventHandler(txt_MouseLeftButtonDown);
+
+            scroller.MouseLeftButtonDown += new MouseButtonEventHandler(scroller_MouseLeftButtonDown);
+            scroller.MouseLeftButtonUp += new MouseButtonEventHandler(scroller_MouseLeftButtonUp);
 
             #endregion
 
-
+            txt.Focusable = false;
             contextCircle.ContextMenu = commands.GetContextMenu(stickyWindow);
 
+        }
+
+        void scroller_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            lblHit2.Content += "-";
+        }
+
+        void scroller_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            lblHit2.Content += "_";
+        }
+
+        void txt_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            lblHit.Content += "-";
+            MyTextBox txt = sender as MyTextBox;
+            StickyWindowModel stickyWindow = txt.TemplatedParent as StickyWindowModel;
+
+            stickyWindow.DragMove();
         }
 
 
