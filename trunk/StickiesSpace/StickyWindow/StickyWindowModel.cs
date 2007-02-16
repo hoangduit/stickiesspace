@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 
 namespace StickyWindow
 {
@@ -24,7 +26,7 @@ namespace StickyWindow
 
 
         #region Properties
-
+        
         #region Custom Properties
 
         public WindowState MyWindowState
@@ -101,11 +103,33 @@ namespace StickyWindow
             //Break Canvas bindings
             SetContainerCanvasBindings(SetBindingMode.ClearBinding);
 
+            //Create DropShadow
+            DropShadowBitmapEffect dps = new DropShadowBitmapEffect();
+            dps.SetValue(NameProperty, "dps");
+            dps.Softness = 1;
+            dps.ShadowDepth = 0;
+            this.sContainer.BitmapEffect = dps;
+
+
+
             //Resize Window
+            //this.Height += 10;
+            //this.Width += 10;
 
-            //Show/Animate DropShadow
+            //Animate DropShadow
+            //Storyboard animationsDropShadowGrow = this.Template.Resources["animationsDropShadowGrow"] as Storyboard;
+            //animationsDropShadowGrow.Begin(this.sContainer);
 
-            this.DragMove();
+            this.RegisterName(dps.GetValue(NameProperty).ToString(), this.sContainer);
+            //this.sContainer.RegisterName(dps.GetValue(NameProperty).ToString(), this.sContainer);
+            DoubleAnimation animDropShadow = new DoubleAnimation(0, 5, new TimeSpan(0, 0, 0, 0, 500));
+            Storyboard.SetTargetName(animDropShadow, dps.GetValue(NameProperty).ToString());
+            Storyboard.SetTargetProperty(animDropShadow, new PropertyPath(DropShadowBitmapEffect.ShadowDepthProperty));
+            Storyboard storyMin = new Storyboard();
+            storyMin.Children.Add(animDropShadow);
+            storyMin.Begin(this.sContainer);
+
+            //this.DragMove();
         }
 
 
@@ -142,8 +166,8 @@ namespace StickyWindow
                     break;
 
                 case SetBindingMode.ClearBinding:
-                    containerCanvas.Height = this.ActualHeight;
-                    containerCanvas.Width = this.ActualWidth;
+                    //containerCanvas.Height = this.ActualHeight;
+                    //containerCanvas.Width = this.ActualWidth;
 
                     BindingOperations.ClearBinding(containerCanvas, Canvas.HeightProperty);
                     BindingOperations.ClearBinding(containerCanvas, Canvas.WidthProperty);
