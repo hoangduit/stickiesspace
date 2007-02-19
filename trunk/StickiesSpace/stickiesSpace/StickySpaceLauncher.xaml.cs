@@ -81,13 +81,12 @@ namespace stickiesSpace
             stickyWindow.WindowStyle = WindowStyle.None;
             stickyWindow.Title = "This is the stickyWindow";
 
+            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
+            stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
 
             stickyWindow.Show();
 
-            this.RegisterName(stickyWindow.Name, stickyWindow);
-            this.RegisterName(stickyWindow.sContainer.Name, stickyWindow.sContainer);
-
-            //stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
+            stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
 
             #endregion
 
@@ -104,8 +103,7 @@ namespace stickiesSpace
             #endregion
 
 
-            txt.Focusable = false;
-            contextCircle.ContextMenu = commands.GetContextMenu(stickyWindow);
+            //contextCircle.ContextMenu = commands.GetContextMenu(stickyWindow);
 
 
             #region Event Wireup
@@ -117,73 +115,59 @@ namespace stickiesSpace
             //txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
             //txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
 
-            txt.MouseLeftButtonDown += new MouseButtonEventHandler(txt_MouseLeftButtonDown);
-            txt.AddHandler(StickyWindowModel.PreviewMouseUpEvent, new MouseButtonEventHandler(txt_ForceMouseUp));
+            //stickyWindow.AddHandler(StickyWindowModel.MouseLeftButtonDownEvent, new RoutedEventHandler(stickyWindow_MouseLeftButtonDown));
+            //stickyWindow.AddHandler(Mouse.MouseUpEvent, new RoutedEventHandler(stickyWindow_MouseLeftButtonUp));
+            
+
+            //stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
+            //stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
+
             #endregion
 
 
         }
 
-
-        void txt_ForceMouseUp(object sender, MouseButtonEventArgs e)
+        void stickyWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             cUp(sender);
-            TextBox txt = sender as TextBox;
-            txt.ReleaseMouseCapture();
+
+            StickyWindowModel stickyWindow = sender as StickyWindowModel;
+            //stickyWindow.ReleaseDrag();
         }
 
-        void txt_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void stickyWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             cDown(sender);
 
-            MyTextBox txt = sender as MyTextBox;
-            StickyWindowModel stickyWindow = txt.TemplatedParent as StickyWindowModel;
+            StickyWindowModel stickyWindow = sender as StickyWindowModel;
             stickyWindow.DragMove();
-            txt.CaptureMouse();
-            
-
             //stickyWindow.StartDrag();
-
-
-
-            //Break Canvas bindings
-            //stickyWindow.SetContainerCanvasBindings(SetBindingMode.ClearBinding);
-
-            //Create DropShadow
-            //DropShadowBitmapEffect dps = new DropShadowBitmapEffect();
-            //dps.SetValue(NameProperty, "dps");
-            //dps.Softness = 1;
-            //dps.ShadowDepth = 0;
-            //stickyWindow.sContainer.BitmapEffect = dps;
-
-
-
-            //Resize Window
-            //this.Height += 10;
-            //this.Width += 10;
-
-            //Animate DropShadow
-            //Storyboard animationsDropShadowGrow = this.Template.Resources["animationsDropShadowGrow"] as Storyboard;
-            //animationsDropShadowGrow.Begin(this.sContainer);
-
-            //this.RegisterName(dps.GetValue(NameProperty).ToString(), dps);
-            //DoubleAnimation animDropShadow = new DoubleAnimation(0, 5, new TimeSpan(0, 0, 0, 0, 500));
-            //Storyboard.SetTargetName(animDropShadow, dps.GetValue(NameProperty).ToString());
-            //Storyboard.SetTargetProperty(animDropShadow, new PropertyPath(DropShadowBitmapEffect.ShadowDepthProperty));
-            //Storyboard storyMin = new Storyboard();
-            //storyMin.Children.Add(animDropShadow);
-            //storyMin.Begin(stickyWindow.sContainer);
-
-
         }
-
 
 
 
 
         #region Events
 
-        
+        void stickyWindow_MouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {
+            cUp(sender);
+
+            StickyWindowModel stickyWindow = sender as StickyWindowModel;
+            //stickyWindow.ReleaseDrag();
+        }
+
+
+        void stickyWindow_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        {
+            cDown(sender);
+
+            StickyWindowModel stickyWindow = sender as StickyWindowModel;
+            stickyWindow.DragMove();
+            //stickyWindow.StartDrag();
+        }
+
+
         void txt_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             MyTextBox txt = sender as MyTextBox;

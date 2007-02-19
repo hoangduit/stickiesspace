@@ -25,6 +25,7 @@ namespace StickyWindow
         }
 
 
+
         #region Properties
         
         #region Custom Properties
@@ -109,38 +110,49 @@ namespace StickyWindow
             dps.Softness = 1;
             dps.ShadowDepth = 0;
             this.sContainer.BitmapEffect = dps;
-
-
+            this.sContainer.RegisterName(dps.GetValue(NameProperty).ToString(), dps);
 
             //Resize Window
-            //this.Height += 10;
-            //this.Width += 10;
+            this.Height += 10;
+            this.Width += 10;
 
-            //Animate DropShadow
-            //Storyboard animationsDropShadowGrow = this.Template.Resources["animationsDropShadowGrow"] as Storyboard;
-            //animationsDropShadowGrow.Begin(this.sContainer);
+            //Create animation
+            DoubleAnimation animShowDropShadow = new DoubleAnimation(0, 5, TimeSpan.FromMilliseconds(100));
+            Storyboard.SetTargetName(animShowDropShadow, dps.GetValue(NameProperty).ToString());
+            Storyboard.SetTargetProperty(animShowDropShadow, new PropertyPath(DropShadowBitmapEffect.ShadowDepthProperty));
+            Storyboard storyShowDrop = new Storyboard();
+            storyShowDrop.Children.Add(animShowDropShadow);
+            storyShowDrop.Begin(this.sContainer);
 
-            this.RegisterName(dps.GetValue(NameProperty).ToString(), this.sContainer);
-            //this.sContainer.RegisterName(dps.GetValue(NameProperty).ToString(), this.sContainer);
-            DoubleAnimation animDropShadow = new DoubleAnimation(0, 5, new TimeSpan(0, 0, 0, 0, 500));
-            Storyboard.SetTargetName(animDropShadow, dps.GetValue(NameProperty).ToString());
-            Storyboard.SetTargetProperty(animDropShadow, new PropertyPath(DropShadowBitmapEffect.ShadowDepthProperty));
-            Storyboard storyMin = new Storyboard();
-            storyMin.Children.Add(animDropShadow);
-            storyMin.Begin(this.sContainer);
-
-            //this.DragMove();
+            this.DragMove();
         }
 
 
         public void ReleaseDrag()
         {
             //Hide/Animate DropShadow
+            DropShadowBitmapEffect dps = this.sContainer.BitmapEffect as DropShadowBitmapEffect;
+            
+            DoubleAnimation animHideDropShadow = new DoubleAnimation(0, 5, TimeSpan.FromMilliseconds(100));
+            animHideDropShadow.Completed += new EventHandler(animHideDropShadow_Completed);
+            Storyboard.SetTargetName(animHideDropShadow, dps.GetValue(NameProperty).ToString());
+            Storyboard.SetTargetProperty(animHideDropShadow, new PropertyPath(DropShadowBitmapEffect.ShadowDepthProperty));
+            Storyboard storyHideDrop = new Storyboard();
+            storyHideDrop.Children.Add(animHideDropShadow);
+            storyHideDrop.Begin(this.sContainer);
 
             //Resize Window
+            this.Height -= 10;
+            this.Width -= 10;
 
             //Restore Canvas Bindings
             SetContainerCanvasBindings(SetBindingMode.SetBinding);
+        }
+
+
+        void animHideDropShadow_Completed(object sender, EventArgs e)
+        {
+            throw new Exception("The method or operation is not implemented.");
         }
 
 
@@ -166,8 +178,8 @@ namespace StickyWindow
                     break;
 
                 case SetBindingMode.ClearBinding:
-                    //containerCanvas.Height = this.ActualHeight;
-                    //containerCanvas.Width = this.ActualWidth;
+                    containerCanvas.Height = this.ActualHeight;
+                    containerCanvas.Width = this.ActualWidth;
 
                     BindingOperations.ClearBinding(containerCanvas, Canvas.HeightProperty);
                     BindingOperations.ClearBinding(containerCanvas, Canvas.WidthProperty);

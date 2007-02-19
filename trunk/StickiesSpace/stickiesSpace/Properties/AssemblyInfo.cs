@@ -16,13 +16,12 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("stickiesSpace")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Fort Knox National Company")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("stickiesSpace")]
-[assembly: AssemblyCopyright("Copyright @ Fort Knox National Company 2007")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: XmlnsDefinition("http://schemas.ConceptualBridge.com/winfx/2006/xaml/presentation", "StickyWindow")]
 
 //In order to begin building localizable applications, set 
 //<UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file
