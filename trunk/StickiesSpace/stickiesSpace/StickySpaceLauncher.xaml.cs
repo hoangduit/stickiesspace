@@ -87,7 +87,6 @@ namespace stickiesSpace
             this.RegisterName(stickyWindow.Name, stickyWindow);
             this.RegisterName(stickyWindow.sContainer.Name, stickyWindow.sContainer);
 
-
             //stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
 
             #endregion
