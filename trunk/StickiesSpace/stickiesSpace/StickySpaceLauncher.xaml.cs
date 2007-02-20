@@ -55,7 +55,6 @@ namespace stickiesSpace
 
 
         StickyWindowCommands commands = new StickyWindowCommands();
-        StickyWindowAnimations animations = new StickyWindowAnimations();
 
 
         public Window1()
@@ -81,9 +80,6 @@ namespace stickiesSpace
             stickyWindow.WindowStyle = WindowStyle.None;
             stickyWindow.Title = "This is the stickyWindow";
 
-            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
-            stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
-
             stickyWindow.Show();
 
             stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
@@ -95,7 +91,7 @@ namespace stickiesSpace
 
             Canvas container = stickyWindow.sContainer;
             Border border = stickyWindow.sBorder;
-            Ellipse contextCircle = stickyWindow.sContextCircle;
+            Border contextCircle = stickyWindow.sContextCircle;
             MyScrollViewer scroller = stickyWindow.sScroller;
             MyTextBox txt = stickyWindow.sTextArea;
             MySlider slider = stickyWindow.sSlider;
@@ -103,23 +99,23 @@ namespace stickiesSpace
             #endregion
 
 
-            //contextCircle.ContextMenu = commands.GetContextMenu(stickyWindow);
+            contextCircle.ContextMenu = commands.GetContextMenu(stickyWindow);
 
 
             #region Event Wireup
 
-            //slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
-            //slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
-            //stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
-            //contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
-            //txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            //txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
+            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+            stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
+            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
 
             //stickyWindow.AddHandler(StickyWindowModel.MouseLeftButtonDownEvent, new RoutedEventHandler(stickyWindow_MouseLeftButtonDown));
             //stickyWindow.AddHandler(Mouse.MouseUpEvent, new RoutedEventHandler(stickyWindow_MouseLeftButtonUp));
             
 
-            //stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
+            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
             //stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
 
             #endregion
@@ -127,32 +123,13 @@ namespace stickiesSpace
 
         }
 
-        void stickyWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            cUp(sender);
-
-            StickyWindowModel stickyWindow = sender as StickyWindowModel;
-            //stickyWindow.ReleaseDrag();
-        }
-
-        void stickyWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            cDown(sender);
-
-            StickyWindowModel stickyWindow = sender as StickyWindowModel;
-            stickyWindow.DragMove();
-            //stickyWindow.StartDrag();
-        }
-
-
-
 
         #region Events
 
         void stickyWindow_MouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
-            cUp(sender);
-
+           // cUp(sender);
+            
             StickyWindowModel stickyWindow = sender as StickyWindowModel;
             //stickyWindow.ReleaseDrag();
         }
@@ -184,17 +161,18 @@ namespace stickiesSpace
         {
             if (e.ClickCount == 2)
             {
-                Ellipse contextCircle = (Ellipse)sender as Ellipse;
+                Border contextCircle = sender as Border;
                 StickyWindowModel stickyWindow = contextCircle.TemplatedParent as StickyWindowModel;
+                StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
 
                 switch (stickyWindow.MyWindowState)
                 {
                     case WindowState.Minimized:
-                        animations.RestoreAnimation(stickyWindow);
+                        animations.RestoreAnimation();
                         break;
 
                     case WindowState.Normal:
-                        animations.MinimizeAnimation(stickyWindow);
+                        animations.MinimizeAnimation();
                         break;
                 }
             }

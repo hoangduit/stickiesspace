@@ -8,8 +8,7 @@ namespace stickiesSpace
 {
 
     public class StickyWindowCommands
-    {
-        StickyWindowAnimations animations = new StickyWindowAnimations();
+    {        
 
         //Command Events
         public static RoutedCommand CloseCmd = new RoutedCommand();
@@ -97,7 +96,8 @@ namespace stickiesSpace
         protected void RestoreCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
-            animations.RestoreAnimation(stickyWindow);
+            StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
+            animations.RestoreAnimation();
         }
 
         protected void RestoreCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -110,7 +110,8 @@ namespace stickiesSpace
         protected void FitContentCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
-            animations.FitContentAnimation(stickyWindow);
+            StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
+            animations.FitContentAnimation();
         }
 
         protected void FitContentCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -123,7 +124,8 @@ namespace stickiesSpace
         protected void MinizmizeCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
-            animations.MinimizeAnimation(stickyWindow);
+            StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
+            animations.MinimizeAnimation();
         }
 
         protected void MinizmizeCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)

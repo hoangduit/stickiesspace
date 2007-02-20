@@ -19,10 +19,13 @@ namespace StickyWindow
     public class StickyWindowModel : Window
     {
 
+        public delegate MouseButtonEventHandler MouseLeftDown();
+
         static StickyWindowModel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StickyWindowModel), new FrameworkPropertyMetadata(typeof(StickyWindowModel)));
         }
+
 
 
 
@@ -56,9 +59,9 @@ namespace StickyWindow
             get { return this.Template.FindName("border", this) as Border; }
         }
 
-        public Ellipse sContextCircle
+        public Border sContextCircle
         {
-            get { return this.Template.FindName("contextCircle", this) as Ellipse; }
+            get { return this.Template.FindName("contextCircle", this) as Border; }
         }
 
         public MyScrollViewer sScroller 
@@ -98,6 +101,7 @@ namespace StickyWindow
         #endregion
 
 
+        
 
         public void StartDrag()
         {
@@ -173,7 +177,7 @@ namespace StickyWindow
 
                     if (this.MyWindowState != WindowState.Minimized)
                     {
-                        //this.ResizeMode = ResizeMode.CanResizeWithGrip;
+                        this.ResizeMode = ResizeMode.CanResizeWithGrip;
                     }
                     break;
 
@@ -184,7 +188,7 @@ namespace StickyWindow
                     BindingOperations.ClearBinding(containerCanvas, Canvas.HeightProperty);
                     BindingOperations.ClearBinding(containerCanvas, Canvas.WidthProperty);
 
-                    //this.ResizeMode = ResizeMode.NoResize;
+                    this.ResizeMode = ResizeMode.NoResize;
                     break;
             }
         }

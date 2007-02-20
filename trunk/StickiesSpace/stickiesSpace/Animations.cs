@@ -18,7 +18,21 @@ namespace stickiesSpace
     public class StickyWindowAnimations
     {
 
-        public void MinimizeAnimation(StickyWindowModel stickyWindow)
+        public StickyWindowAnimations(StickyWindowModel stickyWindowInstance)
+        {
+            _stickyWindow = stickyWindowInstance;
+        }
+        
+        private StickyWindowModel _stickyWindow;
+
+        public StickyWindowModel stickyWindow
+        {
+            get { return _stickyWindow; }
+            set { _stickyWindow = value; }
+        }
+
+
+        public void MinimizeAnimation()
         {
             //Minimize Animation
             stickyWindow.MinHeight = 0;
@@ -36,12 +50,16 @@ namespace stickiesSpace
         }
 
 
-        public void RestoreAnimation(StickyWindowModel stickyWindow)
+        public void RestoreAnimation()
         {
             //Restore Animation
             Storyboard animationsRestore = stickyWindow.Template.Resources["animationsRestore"] as Storyboard;
+            animationsRestore.Completed += new EventHandler(animationsRestore_Completed);
             animationsRestore.Begin(stickyWindow);
+        }
 
+        void animationsRestore_Completed(object sender, EventArgs e)
+        {
             stickyWindow.MinHeight = 50;
             stickyWindow.MinWidth = 100;
             stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
@@ -52,7 +70,7 @@ namespace stickiesSpace
         }
 
 
-        public void FitContentAnimation(StickyWindowModel stickyWindow)
+        public void FitContentAnimation()
         {
             //FitContent Animation
             Storyboard animationsFitContent = stickyWindow.Template.Resources["animationsFitContent"] as Storyboard;

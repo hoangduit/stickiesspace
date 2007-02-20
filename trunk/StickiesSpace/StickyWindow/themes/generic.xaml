@@ -8,8 +8,35 @@
 
   <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#ddd" />
   <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
+
+  <LinearGradientBrush x:Key="shine" EndPoint="0.494,0.889" StartPoint="0.494,0.028">
+    <GradientStop Color="#99000000" Offset="0"/>
+    <GradientStop Color="#22ADD8E6" Offset="1"/>
+  </LinearGradientBrush>
+
+  <TransformGroup x:Key="shineRotate">
+    <ScaleTransform ScaleY="-1" />
+    <RotateTransform Angle="90"/>
+  </TransformGroup>
+
+  <RadialGradientBrush x:Key="buttonGlow">
+    <RadialGradientBrush.RelativeTransform>
+      <TransformGroup>
+        <ScaleTransform ScaleX="1.702" ScaleY="2.243"/>
+        <TranslateTransform X="-0.368" Y="-0.152"/>
+      </TransformGroup>
+    </RadialGradientBrush.RelativeTransform>
+    <GradientStop Color="#B28DBDFF" Offset="0"/>
+    <GradientStop Color="#008DBDFF" Offset="1"/>
+  </RadialGradientBrush>
+
+  <LinearGradientBrush x:Key="buttonShine"  EndPoint="0.494,0.889" StartPoint="0.494,0.028">
+    <GradientStop Color="#99FFFFFF" Offset="0"/>
+    <GradientStop Color="#33FFFFFF" Offset="1"/>
+  </LinearGradientBrush>
   
   <cvrt:ArithmeticConverter x:Key="AC"/>
+
 
   <Style TargetType="ContextMenu">
     <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -38,7 +65,7 @@
     </Setter>
   </Style>
 
-  
+
   <Style TargetType="{x:Type local:StickyWindowModel}">
 
     <Setter Property="Height" Value="200" />
@@ -53,55 +80,18 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:StickyWindowModel}">
 
-          <Canvas x:Name="container"  HorizontalAlignment="Left" VerticalAlignment="Top" 
+          <Canvas x:Name="container"  HorizontalAlignment="Left" VerticalAlignment="Top"
                   Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
                   Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
 
-            <Border x:Name="border" BorderBrush="Red" BorderThickness="10" CornerRadius="5"
-                    Height="{Binding Path=ActualHeight, ElementName=container}"
-                    Width="{Binding Path=ActualWidth, ElementName=container}" >
-              <!--<Border x:Name="borderInner" Background="#7F000000" BorderBrush="#FF000000" BorderThickness="1,1,1,1" CornerRadius="5">
-                <Grid>
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="0.507*"/>
-                    <RowDefinition Height="0.493*"/>
-                  </Grid.RowDefinitions>
-                  <Border Opacity="0" HorizontalAlignment="Stretch" x:Name="glow" Width="Auto" Grid.RowSpan="2" CornerRadius="4,4,4,4">
-                    <Border.Background>
-                      <RadialGradientBrush>
-                        <RadialGradientBrush.RelativeTransform>
-                          <TransformGroup>
-                            <ScaleTransform ScaleX="1.702" ScaleY="2.243"/>
-                            <SkewTransform AngleX="0" AngleY="0"/>
-                            <RotateTransform Angle="0"/>
-                            <TranslateTransform X="-0.368" Y="-0.152"/>
-                          </TransformGroup>
-                        </RadialGradientBrush.RelativeTransform>
-                        <GradientStop Color="#B28DBDFF" Offset="0"/>
-                        <GradientStop Color="#008DBDFF" Offset="1"/>
-                      </RadialGradientBrush>
-                    </Border.Background>
-                  </Border>
-                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Grid.RowSpan="2"/>
-                  <Border HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="shine" Width="Auto" CornerRadius="4,4,0,0">
-                    <Border.Background>
-                      <LinearGradientBrush EndPoint="0.494,0.889" StartPoint="0.494,0.028">
-                        <GradientStop Color="#99FFFFFF" Offset="0"/>
-                        <GradientStop Color="#33FFFFFF" Offset="1"/>
-                      </LinearGradientBrush>
-                    </Border.Background>
-                  </Border>
-                </Grid>
-              </Border>-->              
-            </Border>
-
-            <Ellipse x:Name="contextCircle" Fill="Gray" Height="8" Width="8" Canvas.Left="3" Canvas.Top="3" />
-
+            
+            
+            <!--TextBox-->
             <local:MyScrollViewer x:Name="scroller" Canvas.Top="10" Canvas.Left="10" VerticalScrollBarVisibility="Hidden"
-                          Height="{Binding Path=ActualHeight, ElementName=container,
+              Height="{Binding Path=ActualHeight, ElementName=container,
                                             Converter={StaticResource AC},
                                             ConverterParameter=Int32.Parse(-10)}"
-                          Width="{Binding Path=ActualWidth, ElementName=container,
+              Width="{Binding Path=ActualWidth, ElementName=container,
                                             Converter={StaticResource AC},
                                             ConverterParameter=Int32.Parse(-10)}" >
 
@@ -110,6 +100,48 @@
 
             </local:MyScrollViewer>
 
+
+
+            <!--Border & Border Shines-->
+            <Border x:Name="border" BorderThickness="10,10,0,0" BorderBrush="LightBlue" CornerRadius="5,7,0,7" Focusable="False"
+                    Height="{Binding Path=ActualHeight, ElementName=container}"
+                    Width="{Binding Path=ActualWidth, ElementName=container}" />
+
+            <Border x:Name="shineTop" Canvas.Top="0" Canvas.Left="5" CornerRadius="5,7,2,5" Focusable="False"
+                    Height="11"
+                    Background="{StaticResource shine}"                    
+                    Width="{Binding Path=ActualWidth, ElementName=container,
+                                          Converter={StaticResource AC},
+                                          ConverterParameter=Int32.Parse(-6)}" />
+
+            <Border x:Name="shineLeft" Canvas.Top="5" Canvas.Left="0" CornerRadius="5,7,2,5" Focusable="False"
+                    Height="11"
+                    Background="{StaticResource shine}"
+                    RenderTransform="{StaticResource shineRotate}"                    
+                    Width="{Binding Path=ActualHeight, ElementName=container,
+                                          Converter={StaticResource AC},
+                                          ConverterParameter=Int32.Parse(-6)}" />
+
+
+
+            <!--Context Circle-->
+            <Border x:Name="contextCircle" Height="17" Width="17" Background="#ff000000" BorderBrush="#FF000000" BorderThickness="0" CornerRadius="11" Focusable="False">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="0.507*"/>
+                  <RowDefinition Height="0.493*"/>
+                </Grid.RowDefinitions>
+                <Border HorizontalAlignment="Stretch" x:Name="glow" Width="Auto" Grid.RowSpan="2" CornerRadius="10"
+                        Background="{StaticResource buttonGlow}" />
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Grid.RowSpan="2"/>
+                <Border HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="shine" Width="Auto" CornerRadius="10,10,2,2"
+                        Background="{StaticResource buttonShine}"/>
+              </Grid>
+            </Border>
+
+
+
+            <!--Scroll Slider-->
             <local:MySlider x:Name="slider" Orientation="Vertical" Width="13" Background="Transparent"
                     Canvas.Right="-35" Canvas.Top="15" IsDirectionReversed="True" Minimum="0"
                     Height="{Binding Path=ActualHeight, ElementName=scroller,
@@ -117,6 +149,7 @@
                                       ConverterParameter=Int32.Parse(-25)}" 
                     Value="{Binding Path=MyVerticalOffset, ElementName=scroller}" />
 
+            
             <ResizeGrip x:Name="WindowResizeGrip" Canvas.Right="0" Canvas.Bottom="0" Visibility="Collapsed" IsTabStop="False"/>
 
           </Canvas>
