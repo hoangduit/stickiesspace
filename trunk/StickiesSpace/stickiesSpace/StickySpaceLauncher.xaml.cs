@@ -54,9 +54,6 @@ namespace stickiesSpace
         #endregion
 
 
-        StickyWindowCommands commands = new StickyWindowCommands();
-
-
         public Window1()
         {
             InitializeComponent();
@@ -70,8 +67,8 @@ namespace stickiesSpace
 
             StickyWindowModel stickyWindow = new StickyWindowModel();
             stickyWindow.Name = "stickyWindow";
-            stickyWindow.Height = 220;
-            stickyWindow.Width = 220;
+            //stickyWindow.Height = 220;
+            //stickyWindow.Width = 220;
             stickyWindow.MinHeight = 50;
             stickyWindow.MinWidth = 100;
             stickyWindow.MyWindowState = WindowState.Normal;
@@ -82,6 +79,7 @@ namespace stickiesSpace
 
             stickyWindow.Show();
 
+            stickyWindow.color = Colors.LightBlue;
             stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
 
             #endregion
@@ -98,8 +96,8 @@ namespace stickiesSpace
 
             #endregion
 
-
-            contextCircle.ContextMenu = commands.GetContextMenu(stickyWindow);
+            StickyWindowCommands commands = new StickyWindowCommands(stickyWindow);
+            contextCircle.ContextMenu = commands.GetContextMenu();
 
 
             #region Event Wireup

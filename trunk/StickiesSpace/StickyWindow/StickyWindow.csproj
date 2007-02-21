@@ -65,6 +65,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="StickyWindowColorControlModel.cs" />
     <Compile Include="StickyWindowModel.cs" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>

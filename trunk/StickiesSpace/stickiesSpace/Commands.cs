@@ -8,7 +8,20 @@ namespace stickiesSpace
 {
 
     public class StickyWindowCommands
-    {        
+    {
+
+        public StickyWindowCommands(StickyWindowModel stickyWindowInstance)
+        {
+            _stickyWindow = stickyWindowInstance;
+        }
+
+        private StickyWindowModel _stickyWindow;
+        public StickyWindowModel stickyWindow
+        {
+            get { return _stickyWindow; }
+            set { _stickyWindow = value; }
+        }
+
 
         //Command Events
         public static RoutedCommand CloseCmd = new RoutedCommand();
@@ -16,12 +29,13 @@ namespace stickiesSpace
         public static RoutedCommand RestoreCmd = new RoutedCommand();
         public static RoutedCommand FitContentCmd = new RoutedCommand();
         public static RoutedCommand PrintCmd = new RoutedCommand();
+        public static RoutedCommand ColorsCmd = new RoutedCommand();
 
 
-        public ContextMenu GetContextMenu(Window stickyWindow)
+        public ContextMenu GetContextMenu()
         {
             ContextMenu menu = new ContextMenu();
-            MenuItem m1, m2, m3, m4, m5;
+            MenuItem m1, m2, m3, m4, m5, m6;
 
             
             //TODO Fix Keygestures!
@@ -34,7 +48,7 @@ namespace stickiesSpace
             CommandBinding FitContentCmdBinding = new CommandBinding(FitContentCmd, FitContentCmdExecuted, FitContentCmdCanExecute);
             CommandBinding RestoreCmdBinding = new CommandBinding(RestoreCmd, RestoreCmdExecuted, RestoreCmdCanExecute);
             CommandBinding PrintCmdBinding = new CommandBinding(PrintCmd, PrintCmdExecuted, PrintCmdCanExecute);
-
+            CommandBinding ColorsCmdBinding = new CommandBinding(ColorsCmd, ColorsCmdExecuted, ColorsCmdCanExecute);
 
 
             m1 = new MenuItem();
@@ -67,11 +81,18 @@ namespace stickiesSpace
             m5.CommandBindings.Add(PrintCmdBinding);
             m5.CommandParameter = stickyWindow;
 
+            m6 = new MenuItem();
+            m6.Header = "Colors";
+            m6.CommandBindings.Add(ColorsCmdBinding);
+            m6.Command = ColorsCmd;
+            m6.CommandParameter = stickyWindow;
+
             menu.Items.Add(m1);
             menu.Items.Add(m2);
             menu.Items.Add(m3);
             menu.Items.Add(m4);
             menu.Items.Add(m5);
+            menu.Items.Add(m6);
 
             return menu;
         }
@@ -130,7 +151,7 @@ namespace stickiesSpace
 
         protected void MinizmizeCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            e.CanExecute = (bool)(stickyWindow.MyWindowState == WindowState.Normal);
         }
 
 
@@ -142,6 +163,27 @@ namespace stickiesSpace
         protected void PrintCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
+        }
+
+
+        protected void ColorsCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
+
+            if (stickyWindow.Left < 250)
+            {
+                StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
+                animations.MoveToFitColorControlsParentAnimation();
+            }
+            else
+            {
+                stickyWindow.ShowColorsControl();
+            }
+        }
+
+        protected void ColorsCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !stickyWindow.isColorWindowOpen;
         }
 
         #endregion

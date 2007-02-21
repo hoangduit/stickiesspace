@@ -19,8 +19,6 @@ namespace StickyWindow
     public class StickyWindowModel : Window
     {
 
-        public delegate MouseButtonEventHandler MouseLeftDown();
-
         static StickyWindowModel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StickyWindowModel), new FrameworkPropertyMetadata(typeof(StickyWindowModel)));
@@ -43,6 +41,27 @@ namespace StickyWindow
         {
             get { return (Size)GetValue(OriginalSizeProperty); }
             set { SetValue(OriginalSizeProperty, value); }
+        }
+
+        private Color _color;
+        public Color color
+        {
+            get { return _color; }
+            set
+            {
+                _color = value;
+
+                //update all colored elements colors
+                this.sTextArea.Background = new SolidColorBrush(_color);
+                this.sBorder.BorderBrush = new SolidColorBrush(_color);
+            }
+        }
+
+        private bool _isColorWindowOpen = false;
+        public bool isColorWindowOpen
+        {
+            get { return _isColorWindowOpen; }
+            set { _isColorWindowOpen = value; }
         }
 
         #endregion
@@ -193,6 +212,24 @@ namespace StickyWindow
             }
         }
 
+
+        public void ShowColorsControl()
+        {
+            //Open ColorsControl window
+            StickyWindowColorControlModel stickyWindowColorControl = new StickyWindowColorControlModel(this);
+            stickyWindowColorControl.Height = 200;
+            stickyWindowColorControl.Width = 200;
+            stickyWindowColorControl.Top = this.Top;
+            stickyWindowColorControl.Left = this.Left - (stickyWindowColorControl.Width + 10);
+            stickyWindowColorControl.AllowsTransparency = true;
+            stickyWindowColorControl.WindowStyle = WindowStyle.None;
+            stickyWindowColorControl.Title = "This is the stickyWindowColorControl";
+
+            stickyWindowColorControl.Show();
+
+            stickyWindowColorControl.Initialize();
+            this.isColorWindowOpen = true;
+        }
     }
 
 

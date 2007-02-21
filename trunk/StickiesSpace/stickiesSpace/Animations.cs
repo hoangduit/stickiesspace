@@ -24,7 +24,6 @@ namespace stickiesSpace
         }
         
         private StickyWindowModel _stickyWindow;
-
         public StickyWindowModel stickyWindow
         {
             get { return _stickyWindow; }
@@ -84,6 +83,19 @@ namespace stickiesSpace
             stickyWindow.MinWidth = 100;
             stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
             stickyWindow.MyWindowState = WindowState.Normal;
+        }
+
+
+        public void MoveToFitColorControlsParentAnimation()
+        {
+            Storyboard animationsMoveToFitColorControlsParent = stickyWindow.Template.Resources["animationsMoveToFitColorControlsParent"] as Storyboard;
+            animationsMoveToFitColorControlsParent.Completed += new EventHandler(animationsMoveToFitColorControlsParent_Completed);
+            animationsMoveToFitColorControlsParent.Begin(stickyWindow);
+        }
+
+        void animationsMoveToFitColorControlsParent_Completed(object sender, EventArgs e)
+        {
+            stickyWindow.ShowColorsControl();
         }
 
 
