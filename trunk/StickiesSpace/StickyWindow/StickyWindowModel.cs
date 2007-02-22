@@ -220,7 +220,7 @@ namespace StickyWindow
             stickyWindowColorControl.Height = 200;
             stickyWindowColorControl.Width = 200;
             stickyWindowColorControl.Top = this.Top;
-            stickyWindowColorControl.Left = this.Left - (stickyWindowColorControl.Width + 10);
+            stickyWindowColorControl.Left = this.Left - (stickyWindowColorControl.Width + 5);
             stickyWindowColorControl.AllowsTransparency = true;
             stickyWindowColorControl.WindowStyle = WindowStyle.None;
             stickyWindowColorControl.Title = "This is the stickyWindowColorControl";

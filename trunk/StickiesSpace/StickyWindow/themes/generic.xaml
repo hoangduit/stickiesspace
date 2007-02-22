@@ -6,6 +6,7 @@
     xmlns:e="clr-namespace:stickiesSpace"
     >
 
+  
   <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#ddd" />
   <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
 
@@ -37,7 +38,19 @@
   
   <cvrt:ArithmeticConverter x:Key="AC"/>
 
-
+  <local:LuminanceToBrushConverter x:Key="LuminanceToBrush"/>
+  <local:ColorItemList x:Key="ColorList"/>
+  <DataTemplate x:Key="ColorItemTemplate">
+    <Border Width="170" Height="30"
+      Background="{Binding Path=Brush}">
+      <TextBlock
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Foreground="{Binding Path=Luminance, Converter={StaticResource LuminanceToBrush}}"
+        Text="{Binding Path=Name}"/>
+    </Border>
+  </DataTemplate>
+  
   <Style TargetType="ContextMenu">
     <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -206,7 +219,7 @@
               <DoubleAnimation
                 Storyboard.TargetProperty="(Window.Left)"
                 From="{Binding Path=Left, RelativeSource={RelativeSource TemplatedParent}}"
-                To="450" 
+                To="300" 
                 Duration="0:0:0.25" />
             </Storyboard>
             
@@ -234,31 +247,32 @@
                 <ControlTemplate TargetType="{x:Type local:StickyWindowColorControlModel}">
                   <Canvas x:Name="colorContainer" HorizontalAlignment="Left" VerticalAlignment="Top"
                           Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                          Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" >
+                          Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" 
+                          DataContext="{Binding Source={StaticResource ColorList}}" >
+                    <Canvas.BitmapEffect>
+                      <DropShadowBitmapEffect Softness=".8" />
+                    </Canvas.BitmapEffect>
 
-                    <Border BorderThickness="0" CornerRadius="5"
+                    <Border BorderThickness="1" CornerRadius="5" BorderBrush="White" Background="#aaC78C39"
                           Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                          Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" >
-                      <Border.Background>
-                        <LinearGradientBrush>
-                          <GradientStop Color="#FF000000" Offset="0"/>
-                          <GradientStop Color="#FFDDDDDD" Offset="1"/>
-                        </LinearGradientBrush>
-                      </Border.Background>
-                    </Border>
-                    
-                    <TextBlock Text="Alpha" Canvas.Top="10" Canvas.Left="10" Foreground="White" />
-                    <Slider x:Name="alpha" Value="1" Minimum="0" Maximum="1" Canvas.Top="10" Canvas.Left="50" Width="100" />
-                    <TextBlock Text="Red" Canvas.Top="40" Canvas.Left="10" Foreground="White" />
-                    <Slider x:Name="red" Value=".5" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" />
-                    <TextBlock Text="Green" Canvas.Top="70" Canvas.Left="10" Foreground="White" />
-                    <Slider x:Name="green" Value=".5" Minimum="0" Maximum="1" Canvas.Top="70" Canvas.Left="50" Width="100" />
-                    <TextBlock Text="Blue" Canvas.Top="100" Canvas.Left="10" Foreground="White" />
-                    <Slider x:Name="blue" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" />
+                          Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" />
 
-                    <Rectangle x:Name="testRect" Height="50" Width="50" Canvas.Top="130" Canvas.Left="75" />
+                    <ComboBox Height="20" Width="150" Canvas.Left="15" Canvas.Top="10"
+                              ItemsSource="{Binding}"
+                              ItemTemplate = "{StaticResource ColorItemTemplate}" />
 
-                    <Button x:Name="close" Content="X" Foreground="Red" Background="Transparent" Height="20" Width="20" 
+                    <TextBlock Text="Alpha" Canvas.Top="40" Canvas.Left="19" Foreground="White" />
+                    <Slider x:Name="alpha" Value="1" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}"/>
+                    <TextBlock Text="Red" Canvas.Top="60" Canvas.Left="27" Foreground="White" />
+                    <Slider x:Name="red" Value=".5" Minimum="0" Maximum="1" Canvas.Top="60" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}" />
+                    <TextBlock Text="Green" Canvas.Top="80" Canvas.Left="17" Foreground="White" />
+                    <Slider x:Name="green" Value=".5" Minimum="0" Maximum="1" Canvas.Top="80" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}" />
+                    <TextBlock Text="Blue" Canvas.Top="100" Canvas.Left="25" Foreground="White" />
+                    <Slider x:Name="blue" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}" />
+
+                    <Border x:Name="testRect" Height="50" Width="50" Canvas.Top="130" Canvas.Left="75" CornerRadius="5" BorderThickness="0" />
+
+                    <Button x:Name="close" Content="X" Foreground="White" FontSize="8" Background="Transparent" Height="19" Width="19"
                             Canvas.Right="5" Canvas.Top="5" />
                     
                   </Canvas>

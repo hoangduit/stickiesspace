@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArithmeticConverter.cs" />
+    <Compile Include="ColorItem.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="LuminanceToBrush.cs" />
     <Compile Include="MyScrollViewer.cs" />
     <Compile Include="MySlider.cs" />
     <Compile Include="MyTextBox.cs" />

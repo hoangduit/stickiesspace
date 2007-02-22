@@ -80,9 +80,9 @@ namespace StickyWindow
             get { return this.Template.FindName("blue", this) as Slider; }
         }
 
-        public Rectangle testRect
+        public Border testRect
         {
-            get { return this.Template.FindName("testRect", this) as Rectangle; }
+            get { return this.Template.FindName("testRect", this) as Border; }
         }
 
 
@@ -99,7 +99,7 @@ namespace StickyWindow
 
         private void BindColor()
         {
-            testRect.Fill = new SolidColorBrush(currColor);
+            testRect.Background = new SolidColorBrush(currColor);
 
             //change parent stickyWindow colors
             stickyWindowParent.color = currColor;
@@ -123,6 +123,12 @@ namespace StickyWindow
             this.sGreen.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
             this.sBlue.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
             this.closer.Click += new RoutedEventHandler(closer_Click);
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowColorControlModel_MouseLeftButtonDown);
+        }
+
+        void StickyWindowColorControlModel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
 
         void closer_Click(object sender, RoutedEventArgs e)
