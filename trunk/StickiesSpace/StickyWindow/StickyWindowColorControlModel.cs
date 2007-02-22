@@ -10,16 +10,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 namespace StickyWindow
 {
 
     public class StickyWindowColorControlModel : Window
     {
+
         static StickyWindowColorControlModel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StickyWindowColorControlModel), new FrameworkPropertyMetadata(typeof(StickyWindowColorControlModel)));
         }
+
 
         public StickyWindowColorControlModel(StickyWindowModel stickyWindow)
         {
@@ -51,8 +54,13 @@ namespace StickyWindow
             set
             {
                 _currColor = value;
-                BindSliders();
+                BindSliders(value);
             }
+        }
+
+        public ComboBox colorList
+        {
+            get { return this.Template.FindName("colorList", this) as ComboBox; }
         }
 
         public Button closer
@@ -89,7 +97,6 @@ namespace StickyWindow
         #endregion
 
 
-
         #region Events & Such
 
         void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -97,39 +104,21 @@ namespace StickyWindow
             BindColor();
         }
 
-        private void BindColor()
-        {
-            testRect.Background = new SolidColorBrush(currColor);
 
-            //change parent stickyWindow colors
-            stickyWindowParent.color = currColor;
-        }
-
-        private void BindSliders()
+        void colorList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.sAlpha.Value = stickyWindowParent.color.ScA;
-            this.sRed.Value = stickyWindowParent.color.ScR;
-            this.sGreen.Value = stickyWindowParent.color.ScG;
-            this.sBlue.Value = stickyWindowParent.color.ScB;
-        }
-
-        public void Initialize()
-        {
-            BindSliders();
+            ComboBox colorList = sender as ComboBox;
+            ColorItem selectedColor = colorList.SelectedValue as ColorItem;
+            currColor = selectedColor.Brush.Color;
             BindColor();
-
-            this.sAlpha.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.sRed.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.sGreen.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.sBlue.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.closer.Click += new RoutedEventHandler(closer_Click);
-            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowColorControlModel_MouseLeftButtonDown);
         }
+
 
         void StickyWindowColorControlModel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
+
 
         void closer_Click(object sender, RoutedEventArgs e)
         {
@@ -139,6 +128,94 @@ namespace StickyWindow
 
         #endregion
 
+
+        #region Methods
+
+        private void BindColor()
+        {
+            testRect.Background = new SolidColorBrush(currColor);
+            stickyWindowParent.color = currColor;
+        }
+
+
+        private void BindSliders(Color color)
+        {
+            this.sAlpha.Value = color.ScA;
+            this.sRed.Value = color.ScR;
+            this.sGreen.Value = color.ScG;
+            this.sBlue.Value = color.ScB;
+        }
+
+
+        public void Initialize()
+        {
+            BindSliders(stickyWindowParent.color);
+            BindColor();
+
+            this.sAlpha.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
+            this.sRed.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
+            this.sGreen.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
+            this.sBlue.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
+            this.closer.Click += new RoutedEventHandler(closer_Click);
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowColorControlModel_MouseLeftButtonDown);
+            this.colorList.SelectionChanged += new SelectionChangedEventHandler(colorList_SelectionChanged);
+        }
+
+
+        internal void GetPosition(StickyWindowModel stickyWindow)
+        {
+            double parentY = stickyWindow.Top;
+            double parentX = stickyWindow.Left;
+            double parentH = stickyWindow.Height;
+            double parentW = stickyWindow.Width;
+
+            WindowPositon colorControlPos;
+
+            //Left or Right
+            if (parentX < 220)
+                colorControlPos = WindowPositon.Right;
+            else
+                colorControlPos = WindowPositon.Left;
+
+            //determine actual doubles
+            switch (colorControlPos)
+            {
+                case WindowPositon.Right:
+                    this.Left = parentX + this.Height + 10;
+                    break;
+
+                case WindowPositon.Left:
+                    this.Left = parentX - this.Width - 10;
+                    break;
+            }
+
+            //TODO - Top or Bottom
+            this.Top = parentY;
+        }
+
+
+        internal void CreateAndShow(StickyWindowModel stickyWindow)
+        {
+            this.Height = 210;
+            this.Width = 210;
+            this.AllowsTransparency = true;
+            this.WindowStyle = WindowStyle.None;
+            this.Title = "stickyWindowColorControl";
+            this.Name = "stickyWindowColorControl";
+            this.Owner = stickyWindow;
+            GetPosition(stickyWindow);
+
+            //fade in window
+            Storyboard animationsFadeInColorControl = stickyWindow.Template.Resources["animationsFadeInColorControl"] as Storyboard;
+            animationsFadeInColorControl.Begin(this);
+
+            this.Show();
+
+            Initialize();
+            stickyWindow.isColorWindowOpen = true;
+        }
+
+        #endregion
 
     }
 }

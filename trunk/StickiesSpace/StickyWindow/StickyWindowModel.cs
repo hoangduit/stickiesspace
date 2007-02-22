@@ -215,21 +215,10 @@ namespace StickyWindow
 
         public void ShowColorsControl()
         {
-            //Open ColorsControl window
             StickyWindowColorControlModel stickyWindowColorControl = new StickyWindowColorControlModel(this);
-            stickyWindowColorControl.Height = 200;
-            stickyWindowColorControl.Width = 200;
-            stickyWindowColorControl.Top = this.Top;
-            stickyWindowColorControl.Left = this.Left - (stickyWindowColorControl.Width + 5);
-            stickyWindowColorControl.AllowsTransparency = true;
-            stickyWindowColorControl.WindowStyle = WindowStyle.None;
-            stickyWindowColorControl.Title = "This is the stickyWindowColorControl";
-
-            stickyWindowColorControl.Show();
-
-            stickyWindowColorControl.Initialize();
-            this.isColorWindowOpen = true;
+            stickyWindowColorControl.CreateAndShow(this);
         }
+
     }
 
 

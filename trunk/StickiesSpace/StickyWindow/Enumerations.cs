@@ -19,3 +19,8 @@
         Show, Hide
     }
 
+
+    public enum WindowPositon
+    {
+        Top, Right, Bottom, Left
+    }

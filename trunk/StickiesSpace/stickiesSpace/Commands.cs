@@ -169,16 +169,7 @@ namespace stickiesSpace
         protected void ColorsCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             StickyWindowModel stickyWindow = (StickyWindowModel)e.Parameter;
-
-            if (stickyWindow.Left < 250)
-            {
-                StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
-                animations.MoveToFitColorControlsParentAnimation();
-            }
-            else
-            {
-                stickyWindow.ShowColorsControl();
-            }
+            stickyWindow.ShowColorsControl();
         }
 
         protected void ColorsCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)

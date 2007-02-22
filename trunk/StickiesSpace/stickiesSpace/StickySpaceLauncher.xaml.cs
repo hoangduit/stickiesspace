@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Markup;
 using StickyWindow;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
@@ -60,6 +62,13 @@ namespace stickiesSpace
         }
 
 
+        public void SerialzeState(object sender, EventArgs e)
+        {
+            XmlWriter wr = new XmlTextWriter("stickySpacesSerialization.xml", Encoding.UTF8);
+            XamlWriter.Save(this.OwnedWindows[0], wr);
+        }
+
+
         public void CreateStickyWindow(object sender, EventArgs e)
         {
 
@@ -67,8 +76,8 @@ namespace stickiesSpace
 
             StickyWindowModel stickyWindow = new StickyWindowModel();
             stickyWindow.Name = "stickyWindow";
-            //stickyWindow.Height = 220;
-            //stickyWindow.Width = 220;
+            stickyWindow.Left += .1;
+            stickyWindow.Top += .1;
             stickyWindow.MinHeight = 50;
             stickyWindow.MinWidth = 100;
             stickyWindow.MyWindowState = WindowState.Normal;
@@ -76,6 +85,7 @@ namespace stickiesSpace
             stickyWindow.AllowsTransparency = true;
             stickyWindow.WindowStyle = WindowStyle.None;
             stickyWindow.Title = "This is the stickyWindow";
+            stickyWindow.Owner = this;
 
             stickyWindow.Show();
 

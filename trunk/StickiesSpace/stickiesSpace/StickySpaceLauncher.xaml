@@ -16,6 +16,7 @@
     <Grid>
       <StackPanel Background="{StaticResource backgroundBrush}">
         <Button Height="25" VerticalAlignment="Top" Content="Open StickyWindow" Margin="5" Click="CreateStickyWindow"/>
+        <Button Height="25" VerticalAlignment="Top" Content="Serialize" Margin="5" Click="SerialzeState"/>
         <Label Height="25" Name="lblHit2" VerticalAlignment="Top" HorizontalAlignment="Center">[debug1]</Label>
         <Label Height="25" Name="lblHit" VerticalAlignment="Top" HorizontalAlignment="Center">[debug2]</Label>
 

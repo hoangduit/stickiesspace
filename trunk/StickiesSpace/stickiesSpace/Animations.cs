@@ -86,19 +86,6 @@ namespace stickiesSpace
         }
 
 
-        public void MoveToFitColorControlsParentAnimation()
-        {
-            Storyboard animationsMoveToFitColorControlsParent = stickyWindow.Template.Resources["animationsMoveToFitColorControlsParent"] as Storyboard;
-            animationsMoveToFitColorControlsParent.Completed += new EventHandler(animationsMoveToFitColorControlsParent_Completed);
-            animationsMoveToFitColorControlsParent.Begin(stickyWindow);
-        }
-
-        void animationsMoveToFitColorControlsParent_Completed(object sender, EventArgs e)
-        {
-            stickyWindow.ShowColorsControl();
-        }
-
-
     }
 
 }

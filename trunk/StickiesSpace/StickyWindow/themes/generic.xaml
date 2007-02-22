@@ -6,13 +6,14 @@
     xmlns:e="clr-namespace:stickiesSpace"
     >
 
-  
+
   <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#ddd" />
   <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
 
   <LinearGradientBrush x:Key="shine" EndPoint="0.494,0.889" StartPoint="0.494,0.028">
     <GradientStop Color="#99FFFFFF" Offset="0"/>
-    <GradientStop Color="{Binding Path=Background, ElementName=container}" Offset="1"/>   <!--#22ADD8E6-->
+    <GradientStop Color="{Binding Path=Background, ElementName=container}" Offset="1"/>
+    <!--#22ADD8E6-->
   </LinearGradientBrush>
 
   <TransformGroup x:Key="shineRotate">
@@ -35,13 +36,13 @@
     <GradientStop Color="#99FFFFFF" Offset="0"/>
     <GradientStop Color="#33FFFFFF" Offset="1"/>
   </LinearGradientBrush>
-  
+
   <cvrt:ArithmeticConverter x:Key="AC"/>
 
   <local:LuminanceToBrushConverter x:Key="LuminanceToBrush"/>
   <local:ColorItemList x:Key="ColorList"/>
   <DataTemplate x:Key="ColorItemTemplate">
-    <Border Width="170" Height="30"
+    <Border Width="126" Height="16"
       Background="{Binding Path=Brush}">
       <TextBlock
         HorizontalAlignment="Center"
@@ -50,7 +51,7 @@
         Text="{Binding Path=Name}"/>
     </Border>
   </DataTemplate>
-  
+
   <Style TargetType="ContextMenu">
     <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -78,7 +79,8 @@
     </Setter>
   </Style>
 
-
+  
+  
   <Style TargetType="{x:Type local:StickyWindowModel}">
 
     <Setter Property="Height" Value="200" />
@@ -97,8 +99,8 @@
                   Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
                   Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
 
-            
-            
+
+
             <!--TextBox-->
             <local:MyScrollViewer x:Name="scroller" Canvas.Top="10" Canvas.Left="10" VerticalScrollBarVisibility="Hidden"
               Height="{Binding Path=ActualHeight, ElementName=container,
@@ -122,7 +124,7 @@
 
             <Border x:Name="shineTop" Canvas.Top="0" Canvas.Left="5" CornerRadius="5,7,2,5" Focusable="False"
                     Height="11"
-                    Background="{StaticResource shine}"                    
+                    Background="{StaticResource shine}"
                     Width="{Binding Path=ActualWidth, ElementName=container,
                                           Converter={StaticResource AC},
                                           ConverterParameter=Int32.Parse(-6)}" />
@@ -130,7 +132,7 @@
             <Border x:Name="shineLeft" Canvas.Top="5" Canvas.Left="0" CornerRadius="5,7,2,5" Focusable="False"
                     Height="11"
                     Background="{StaticResource shine}"
-                    RenderTransform="{StaticResource shineRotate}"                    
+                    RenderTransform="{StaticResource shineRotate}"
                     Width="{Binding Path=ActualHeight, ElementName=container,
                                           Converter={StaticResource AC},
                                           ConverterParameter=Int32.Parse(-6)}" />
@@ -215,14 +217,14 @@
                 Duration="0:0:0.25" />
             </Storyboard>
 
-            <Storyboard x:Key="animationsMoveToFitColorControlsParent">
+            <Storyboard x:Key="animationsFadeInColorControl">
               <DoubleAnimation
-                Storyboard.TargetProperty="(Window.Left)"
-                From="{Binding Path=Left, RelativeSource={RelativeSource TemplatedParent}}"
-                To="300" 
-                Duration="0:0:0.25" />
+                Storyboard.TargetProperty="(Canvas.Opacity)"
+                From="0"
+                To="1" 
+                Duration="0:0:0.50" />
             </Storyboard>
-            
+
           </ControlTemplate.Resources>
 
           
@@ -237,27 +239,22 @@
 
 
     <Style TargetType="{x:Type local:StickyWindowColorControlModel}">
-      <Setter Property="Height" Value="200" />
-      <Setter Property="Width" Value="200" />
-      <Setter Property="MinHeight" Value="200" />
-      <Setter Property="MinWidth" Value="200" />
       <Setter Property="Background" Value="Transparent" />      
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StickyWindowColorControlModel}">
-                  <Canvas x:Name="colorContainer" HorizontalAlignment="Left" VerticalAlignment="Top"
-                          Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                          Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" 
+                  <Canvas x:Name="colorContainer"  HorizontalAlignment="Left" VerticalAlignment="Top"
+                          Height="200" Width="200" 
                           DataContext="{Binding Source={StaticResource ColorList}}" >
                     <Canvas.BitmapEffect>
                       <DropShadowBitmapEffect Softness=".8" />
                     </Canvas.BitmapEffect>
 
                     <Border BorderThickness="1" CornerRadius="5" BorderBrush="White" Background="#aaC78C39"
-                          Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                          Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" />
+                          Height="{Binding Path=ActualHeight, ElementName=colorContainer}"
+                          Width="{Binding Path=ActualWidth, ElementName=colorContainer}" />
 
-                    <ComboBox Height="20" Width="150" Canvas.Left="15" Canvas.Top="10"
+                    <ComboBox x:Name="colorList" Height="22" Width="150" Canvas.Left="14" Canvas.Top="10"
                               ItemsSource="{Binding}"
                               ItemTemplate = "{StaticResource ColorItemTemplate}" />
 
