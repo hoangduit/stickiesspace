@@ -62,162 +62,46 @@ namespace stickiesSpace
         }
 
 
-        public void SerialzeState(object sender, EventArgs e)
-        {
-            XmlWriter wr = new XmlTextWriter("stickySpacesSerialization.xml", Encoding.UTF8);
-            XamlWriter.Save(this.OwnedWindows[0], wr);
-        }
-
-
         public void CreateStickyWindow(object sender, EventArgs e)
         {
-
-            #region Window Constructor
-
             StickyWindowModel stickyWindow = new StickyWindowModel();
-            stickyWindow.Name = "stickyWindow";
-            stickyWindow.Left += .1;
-            stickyWindow.Top += .1;
-            stickyWindow.MinHeight = 50;
-            stickyWindow.MinWidth = 100;
-            stickyWindow.MyWindowState = WindowState.Normal;
-            stickyWindow.Background = Brushes.Transparent;
-            stickyWindow.AllowsTransparency = true;
-            stickyWindow.WindowStyle = WindowStyle.None;
-            stickyWindow.Title = "This is the stickyWindow";
             stickyWindow.Owner = this;
-
             stickyWindow.Show();
-
-            stickyWindow.color = Colors.LightBlue;
-            stickyWindow.SetContainerCanvasBindings(SetBindingMode.SetBinding);
-
-            #endregion
-
-
-            #region UIElement grabbers
-
-            Canvas container = stickyWindow.sContainer;
-            Border border = stickyWindow.sBorder;
-            Border contextCircle = stickyWindow.sContextCircle;
-            MyScrollViewer scroller = stickyWindow.sScroller;
-            MyTextBox txt = stickyWindow.sTextArea;
-            MySlider slider = stickyWindow.sSlider;
-
-            #endregion
-
-            StickyWindowCommands commands = new StickyWindowCommands(stickyWindow);
-            contextCircle.ContextMenu = commands.GetContextMenu();
-
-
-            #region Event Wireup
-
-            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
-            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
-            stickyWindow.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
-            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
-            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
-
-            //stickyWindow.AddHandler(StickyWindowModel.MouseLeftButtonDownEvent, new RoutedEventHandler(stickyWindow_MouseLeftButtonDown));
-            //stickyWindow.AddHandler(Mouse.MouseUpEvent, new RoutedEventHandler(stickyWindow_MouseLeftButtonUp));
-            
-
-            stickyWindow.MouseLeftButtonDown += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonDown);
-            //stickyWindow.MouseLeftButtonUp += new MouseButtonEventHandler(stickyWindow_MouseLeftButtonUp);
-
-            #endregion
-
-
+            stickyWindow.Initialize();
         }
 
 
-        #region Events
-
-        void stickyWindow_MouseLeftButtonUp(object sender, RoutedEventArgs e)
+        public void SerialzeState(object sender, EventArgs e)
         {
-           // cUp(sender);
-            
-            StickyWindowModel stickyWindow = sender as StickyWindowModel;
-            //stickyWindow.ReleaseDrag();
+            XmlTextWriter serializeWriter = new XmlTextWriter("stickySpacesState.xml", Encoding.UTF8);
+
+            serializeWriter.WriteStartDocument();
+            serializeWriter.WriteStartElement("StickySpacesWindows");
+
+            foreach (StickyWindowModel sw in this.OwnedWindows)
+                serializeWriter.WriteRaw(sw.Serialize());
+
+            serializeWriter.WriteEndDocument();
+            serializeWriter.Flush();
+            serializeWriter.Close();
         }
 
 
-        void stickyWindow_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        public void DeSerialzeState(object sender, EventArgs e)
         {
-            cDown(sender);
+            XmlReader reader = new XmlTextReader("stickySpacesState.xml");
+            reader.MoveToContent();
 
-            StickyWindowModel stickyWindow = sender as StickyWindowModel;
-            stickyWindow.DragMove();
-            //stickyWindow.StartDrag();
-        }
-
-
-        void txt_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            MyTextBox txt = sender as MyTextBox;
-            txt.ActiveState = TextBoxActiveState.Inactive;
-        }
-
-        void txt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            MyTextBox txt = sender as MyTextBox;
-            txt.ActiveState = TextBoxActiveState.Active;
-        }
-
-        void contextCircle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
+            while (reader.MoveToContent() == XmlNodeType.Element)
             {
-                Border contextCircle = sender as Border;
-                StickyWindowModel stickyWindow = contextCircle.TemplatedParent as StickyWindowModel;
-                StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
-
-                switch (stickyWindow.MyWindowState)
-                {
-                    case WindowState.Minimized:
-                        animations.RestoreAnimation();
-                        break;
-
-                    case WindowState.Normal:
-                        animations.MinimizeAnimation();
-                        break;
-                }
+                StickyWindowModel newSw = new StickyWindowModel();
+                newSw.Owner = this;
+                newSw.Show();
+                newSw.Deserialize(reader.ReadInnerXml());
+                newSw.Initialize();
             }
+
         }
-
-        void slider_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MySlider slider = (MySlider)sender;
-            slider.AnimateSlider(SliderAnimateMode.Hide);
-            e.Handled = true;
-        }
-
-        void slider_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MySlider slider = (MySlider)sender;
-            slider.AnimateSlider(SliderAnimateMode.Show);
-            e.Handled = true;
-        }
-
-        void scroller_ScrollChanged(object sender, RoutedEventArgs e)
-        {
-            StickyWindowModel stickyWindow = (StickyWindowModel)sender;
-            MySlider slider = stickyWindow.sSlider;
-            slider.HandleScrollChange(stickyWindow);
-            e.Handled = true;
-        }
-
-
-
-        #endregion
-
-
-        #region Slider Helpers
-
-
-        #endregion
-
 
 
     }

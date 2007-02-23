@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Xml;
 
 namespace StickyWindow
 {
@@ -24,6 +26,18 @@ namespace StickyWindow
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StickyWindowModel), new FrameworkPropertyMetadata(typeof(StickyWindowModel)));
         }
 
+
+        public StickyWindowModel()
+        {
+            this.Name = "stickyWindow";
+            this.MinHeight = 50;
+            this.MinWidth = 100;
+            this.MyWindowState = WindowState.Normal;
+            this.Background = Brushes.Transparent;
+            this.AllowsTransparency = true;
+            this.WindowStyle = WindowStyle.None;
+            this.Title = "This is the stickyWindow";
+        }
 
 
 
@@ -120,7 +134,7 @@ namespace StickyWindow
         #endregion
 
 
-        
+        #region AnimateDropshadow  - UNUSED
 
         public void StartDrag()
         {
@@ -178,6 +192,10 @@ namespace StickyWindow
             throw new Exception("The method or operation is not implemented.");
         }
 
+        #endregion
+
+
+        #region Methods
 
         public void SetContainerCanvasBindings(SetBindingMode bindingMode)
         {
@@ -219,6 +237,164 @@ namespace StickyWindow
             stickyWindowColorControl.CreateAndShow(this);
         }
 
+
+        public String Serialize()
+        {
+            StringBuilder sb = new StringBuilder();
+            XmlTextWriter xmlout = new XmlTextWriter(new StringWriter(sb));
+
+            xmlout.WriteStartElement("StickyWindow");
+
+            //x,y position
+            xmlout.WriteStartElement("WindowPosition");
+            xmlout.WriteAttributeString("X", this.Left.ToString());
+            xmlout.WriteAttributeString("Y", this.Top.ToString());
+            xmlout.WriteEndElement();
+
+            //h,w size
+            xmlout.WriteStartElement("WindowSize");
+            xmlout.WriteAttributeString("H", this.OriginalSize.Height.ToString());
+            xmlout.WriteAttributeString("W", this.OriginalSize.Width.ToString());
+            xmlout.WriteEndElement();
+
+            //text content
+            xmlout.WriteElementString("WindowText", this.sTextArea.Text);
+
+            //window state
+            xmlout.WriteStartElement("WindowState");
+            xmlout.WriteAttributeString("State", this.MyWindowState.ToString());
+            xmlout.WriteEndElement();
+
+            //color
+            xmlout.WriteStartElement("WindowColor");
+            xmlout.WriteAttributeString("Color", new SolidColorBrush(
+                                                    Color.FromArgb(this.color.A, this.color.R, this.color.G, this.color.B)
+                                                                      ).Color.ToString());
+            xmlout.WriteEndElement();
+
+            xmlout.WriteEndElement();
+            xmlout.Flush();
+            xmlout.Close();
+            return sb.ToString();
+        }
+
+        #endregion
+
+
+
+        public void Deserialize(string windowState)
+        {
+            this.sTextArea.Text = "blah blah blah Deserialized";
+        }
+
+
+
+        public void Initialize()
+        {
+            #region UIElement grabbers
+
+            Canvas container = this.sContainer;
+            Border border = this.sBorder;
+            Border contextCircle = this.sContextCircle;
+            MyScrollViewer scroller = this.sScroller;
+            MyTextBox txt = this.sTextArea;
+            MySlider slider = this.sSlider;
+
+            #endregion
+
+            this.color = Colors.LightBlue;
+            this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
+
+            StickyWindowCommands commands = new StickyWindowCommands(this);
+            contextCircle.ContextMenu = commands.GetContextMenu();
+
+
+            #region Event Wireup
+
+            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
+            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+            this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
+            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
+
+            #endregion
+        }
+
+
+
+
+
+
+
+        #region Events
+
+        void StickyWindowModel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            StickyWindowModel stickyWindow = sender as StickyWindowModel;
+            stickyWindow.DragMove();
+        }
+
+        void txt_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            MyTextBox txt = sender as MyTextBox;
+            txt.ActiveState = TextBoxActiveState.Inactive;
+        }
+
+        void txt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MyTextBox txt = sender as MyTextBox;
+            txt.ActiveState = TextBoxActiveState.Active;
+        }
+
+        void contextCircle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                Border contextCircle = sender as Border;
+                StickyWindowModel stickyWindow = contextCircle.TemplatedParent as StickyWindowModel;
+                StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
+
+                switch (stickyWindow.MyWindowState)
+                {
+                    case WindowState.Minimized:
+                        animations.RestoreAnimation();
+                        break;
+
+                    case WindowState.Normal:
+                        animations.MinimizeAnimation();
+                        break;
+                }
+            }
+        }
+
+        void slider_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MySlider slider = (MySlider)sender;
+            slider.AnimateSlider(SliderAnimateMode.Hide);
+            e.Handled = true;
+        }
+
+        void slider_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MySlider slider = (MySlider)sender;
+            slider.AnimateSlider(SliderAnimateMode.Show);
+            e.Handled = true;
+        }
+
+        void scroller_ScrollChanged(object sender, RoutedEventArgs e)
+        {
+            StickyWindowModel stickyWindow = (StickyWindowModel)sender;
+            MySlider slider = stickyWindow.sSlider;
+            slider.HandleScrollChange(stickyWindow);
+            e.Handled = true;
+        }
+
+        #endregion
+
+
+ 
     }
 
 

@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:cc="http://schemas.ConceptualBridge.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="stickiesSpace" Height="272" Width="168"
+    Title="stickiesSpace" Height="290" Width="168"
     >
 
   <Window.Resources>
@@ -17,6 +17,8 @@
       <StackPanel Background="{StaticResource backgroundBrush}">
         <Button Height="25" VerticalAlignment="Top" Content="Open StickyWindow" Margin="5" Click="CreateStickyWindow"/>
         <Button Height="25" VerticalAlignment="Top" Content="Serialize" Margin="5" Click="SerialzeState"/>
+        <Button Height="25" VerticalAlignment="Top" Content="DeSerialize" Margin="5" Click="DeSerialzeState"/>
+        
         <Label Height="25" Name="lblHit2" VerticalAlignment="Top" HorizontalAlignment="Center">[debug1]</Label>
         <Label Height="25" Name="lblHit" VerticalAlignment="Top" HorizontalAlignment="Center">[debug2]</Label>
 
