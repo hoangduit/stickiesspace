@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.XPath;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -66,8 +68,6 @@ namespace stickiesSpace
         {
             StickyWindowModel stickyWindow = new StickyWindowModel();
             stickyWindow.Owner = this;
-            stickyWindow.Show();
-            stickyWindow.Initialize();
         }
 
 
@@ -89,18 +89,20 @@ namespace stickiesSpace
 
         public void DeSerialzeState(object sender, EventArgs e)
         {
-            XmlReader reader = new XmlTextReader("stickySpacesState.xml");
-            reader.MoveToContent();
+            XmlDocument stateDoc = new XmlDocument();
+            stateDoc.Load("stickySpacesState.xml");
+            StringReader reader = new StringReader(stateDoc.InnerXml);
+            XPathDocument navDoc = new XPathDocument(reader);
+            XPathNavigator nav = navDoc.CreateNavigator();
+            XPathExpression windowsPath = nav.Compile(@"/StickySpacesWindows/StickyWindow");
+            XPathNodeIterator windows = nav.Select(windowsPath);
 
-            while (reader.MoveToContent() == XmlNodeType.Element)
-            {
-                StickyWindowModel newSw = new StickyWindowModel();
-                newSw.Owner = this;
-                newSw.Show();
-                newSw.Deserialize(reader.ReadInnerXml());
-                newSw.Initialize();
-            }
-
+            if (windows != null)
+                while (windows.MoveNext())
+                {
+                    StickyWindowModel newSw = new StickyWindowModel(windows.Current.OuterXml);
+                    newSw.Owner = this;
+                }         
         }
 
 

@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using StickyWindow;
 using System.Windows.Media.Animation;
 
-namespace stickiesSpace
+namespace StickyWindow
 {
 
     public class StickyWindowAnimations

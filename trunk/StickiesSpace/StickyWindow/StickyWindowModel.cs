@@ -37,8 +37,61 @@ namespace StickyWindow
             this.AllowsTransparency = true;
             this.WindowStyle = WindowStyle.None;
             this.Title = "This is the stickyWindow";
+
+            this.Show();
+
+            #region UIElement grabbers
+
+            Canvas container = this.sContainer;
+            Border border = this.sBorder;
+            Border contextCircle = this.sContextCircle;
+            MyScrollViewer scroller = this.sScroller;
+            MyTextBox txt = this.sTextArea;
+            MySlider slider = this.sSlider;
+
+            #endregion
+
+            StickyWindowCommands commands = new StickyWindowCommands(this);
+            contextCircle.ContextMenu = commands.GetContextMenu();
+
+            if (this.OriginalSize.Width == 0 && this.OriginalSize.Height == 0)
+                this.Height = 200; this.Width = 200;
+
+            this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
+
+            #region Event Wireup
+
+            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
+            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+            this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
+            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
+
+            #endregion
+            
+            this.Opacity = 1;
         }
 
+
+        public StickyWindowModel(string DeSerializeXML)
+        {
+            this.Name = "stickyWindow";
+            this.MinHeight = 50;
+            this.MinWidth = 100;
+            this.MyWindowState = WindowState.Normal;
+            this.Background = Brushes.Transparent;
+            this.AllowsTransparency = true;
+            this.WindowStyle = WindowStyle.None;
+            this.Title = "This is the stickyWindow";
+
+            this.Show();
+
+            Deserialize(DeSerializeXML);
+
+            this.Opacity = 1;
+        }
 
 
         #region Properties
@@ -126,7 +179,7 @@ namespace StickyWindow
             FrameworkPropertyMetadataOptions.Inherits));
 
         public static DependencyProperty OriginalSizeProperty = DependencyProperty.Register("OriginalSize", typeof(Size), typeof(Window),
-            new FrameworkPropertyMetadata(new Size(200,200), FrameworkPropertyMetadataOptions.AffectsMeasure |
+            new FrameworkPropertyMetadata(new Size(0,0), FrameworkPropertyMetadataOptions.AffectsMeasure |
             FrameworkPropertyMetadataOptions.AffectsRender |
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
             FrameworkPropertyMetadataOptions.Inherits));
@@ -278,54 +331,46 @@ namespace StickyWindow
             return sb.ToString();
         }
 
-        #endregion
-
-
 
         public void Deserialize(string windowState)
         {
-            this.sTextArea.Text = "blah blah blah Deserialized";
+            XmlDocument windowStateDoc = new XmlDocument();
+            windowStateDoc.LoadXml(windowState);
+
+            XmlNodeList windowAttribs = windowStateDoc.ChildNodes[0].ChildNodes;
+
+            foreach (XmlNode attribNode in windowAttribs)
+            {
+                switch (attribNode.Name)
+                {
+                    case "WindowPosition":
+                        this.Left = double.Parse(attribNode.Attributes["X"].Value);
+                        this.Top = double.Parse(attribNode.Attributes["Y"].Value);
+                        break;
+
+                    case "WindowSize":
+                        Size oSize = new Size(double.Parse(attribNode.Attributes["W"].Value), double.Parse(attribNode.Attributes["H"].Value));
+                        this.Height = oSize.Height;
+                        this.Width = oSize.Width;
+                        this.OriginalSize = oSize;
+                        break;
+
+                    case "WindowText":
+                        this.sTextArea.Text = attribNode.InnerText;
+                        break;
+
+                    case "WindowState":
+                        this.MyWindowState = (WindowState)Enum.Parse(typeof(WindowState), attribNode.Attributes["State"].Value);
+                        break;
+
+                    case "WindowColor":
+                        this.color = (Color)ColorConverter.ConvertFromString(attribNode.Attributes["Color"].Value);
+                        break;
+                }
+            }
         }
 
-
-
-        public void Initialize()
-        {
-            #region UIElement grabbers
-
-            Canvas container = this.sContainer;
-            Border border = this.sBorder;
-            Border contextCircle = this.sContextCircle;
-            MyScrollViewer scroller = this.sScroller;
-            MyTextBox txt = this.sTextArea;
-            MySlider slider = this.sSlider;
-
-            #endregion
-
-            this.color = Colors.LightBlue;
-            this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
-
-            StickyWindowCommands commands = new StickyWindowCommands(this);
-            contextCircle.ContextMenu = commands.GetContextMenu();
-
-
-            #region Event Wireup
-
-            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
-            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
-            this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
-            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
-            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
-            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
-
-            #endregion
-        }
-
-
-
-
-
+        #endregion
 
 
         #region Events

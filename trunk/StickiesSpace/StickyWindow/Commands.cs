@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using StickyWindow;
 
-namespace stickiesSpace
+namespace StickyWindow
 {
 
     public class StickyWindowCommands
