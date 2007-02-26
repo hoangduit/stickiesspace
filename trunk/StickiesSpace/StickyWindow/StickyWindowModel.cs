@@ -32,6 +32,8 @@ namespace StickyWindow
             this.Name = "stickyWindow";
             this.MinHeight = 50;
             this.MinWidth = 100;
+            this.Height = 200;
+            this.Width = 200;
             this.MyWindowState = WindowState.Normal;
             this.Background = Brushes.Transparent;
             this.AllowsTransparency = true;
@@ -40,37 +42,27 @@ namespace StickyWindow
 
             this.Show();
 
-            #region UIElement grabbers
-
-            Canvas container = this.sContainer;
-            Border border = this.sBorder;
-            Border contextCircle = this.sContextCircle;
-            MyScrollViewer scroller = this.sScroller;
-            MyTextBox txt = this.sTextArea;
-            MySlider slider = this.sSlider;
-
-            #endregion
+            Size oSize = new Size(200, 200);
+            this.OriginalSize = oSize;
 
             StickyWindowCommands commands = new StickyWindowCommands(this);
-            contextCircle.ContextMenu = commands.GetContextMenu();
-
-            if (this.OriginalSize.Width == 0 && this.OriginalSize.Height == 0)
-                this.Height = 200; this.Width = 200;
+            this.sContextCircle.ContextMenu = commands.GetContextMenu();
 
             this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
 
             #region Event Wireup
 
-            slider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
-            slider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+            this.sSlider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
+            this.sSlider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
             this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
-            contextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
-            txt.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            txt.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            this.sContextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+            this.sTextArea.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            this.sTextArea.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
             this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
 
             #endregion
-            
+
+            this.color = Colors.LightBlue;
             this.Opacity = 1;
         }
 
@@ -89,6 +81,23 @@ namespace StickyWindow
             this.Show();
 
             Deserialize(DeSerializeXML);
+
+            StickyWindowCommands commands = new StickyWindowCommands(this);
+            this.sContextCircle.ContextMenu = commands.GetContextMenu();
+
+            this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
+
+            #region Event Wireup
+
+            this.sSlider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
+            this.sSlider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
+            this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
+            this.sContextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
+            this.sTextArea.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            this.sTextArea.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
+
+            #endregion
 
             this.Opacity = 1;
         }
@@ -298,6 +307,11 @@ namespace StickyWindow
 
             xmlout.WriteStartElement("StickyWindow");
 
+            //window state
+            xmlout.WriteStartElement("WindowState");
+            xmlout.WriteAttributeString("State", this.MyWindowState.ToString());
+            xmlout.WriteEndElement();
+
             //x,y position
             xmlout.WriteStartElement("WindowPosition");
             xmlout.WriteAttributeString("X", this.Left.ToString());
@@ -306,17 +320,20 @@ namespace StickyWindow
 
             //h,w size
             xmlout.WriteStartElement("WindowSize");
-            xmlout.WriteAttributeString("H", this.OriginalSize.Height.ToString());
-            xmlout.WriteAttributeString("W", this.OriginalSize.Width.ToString());
+            if (this.MyWindowState == WindowState.Normal)
+            {
+                xmlout.WriteAttributeString("H", this.ActualHeight.ToString());
+                xmlout.WriteAttributeString("W", this.ActualWidth.ToString());
+            }
+            else
+            {
+                xmlout.WriteAttributeString("H", this.OriginalSize.Height.ToString());
+                xmlout.WriteAttributeString("W", this.OriginalSize.Width.ToString());
+            }
             xmlout.WriteEndElement();
 
             //text content
             xmlout.WriteElementString("WindowText", this.sTextArea.Text);
-
-            //window state
-            xmlout.WriteStartElement("WindowState");
-            xmlout.WriteAttributeString("State", this.MyWindowState.ToString());
-            xmlout.WriteEndElement();
 
             //color
             xmlout.WriteStartElement("WindowColor");
@@ -348,19 +365,30 @@ namespace StickyWindow
                         this.Top = double.Parse(attribNode.Attributes["Y"].Value);
                         break;
 
+                    case "WindowState":
+                        this.MyWindowState = (WindowState)Enum.Parse(typeof(WindowState), attribNode.Attributes["State"].Value);
+                        break;
+
                     case "WindowSize":
                         Size oSize = new Size(double.Parse(attribNode.Attributes["W"].Value), double.Parse(attribNode.Attributes["H"].Value));
-                        this.Height = oSize.Height;
-                        this.Width = oSize.Width;
+                        if (this.MyWindowState == WindowState.Minimized)
+                        {
+                            this.MinHeight = 0;
+                            this.MinWidth = 0;
+                            this.Height = 20;
+                            this.Width = 20;
+                            this.ResizeMode = ResizeMode.NoResize;
+                        }
+                        else
+                        {
+                            this.Height = oSize.Height;
+                            this.Width = oSize.Width;
+                        }
                         this.OriginalSize = oSize;
                         break;
 
                     case "WindowText":
                         this.sTextArea.Text = attribNode.InnerText;
-                        break;
-
-                    case "WindowState":
-                        this.MyWindowState = (WindowState)Enum.Parse(typeof(WindowState), attribNode.Attributes["State"].Value);
                         break;
 
                     case "WindowColor":
@@ -411,6 +439,8 @@ namespace StickyWindow
                         animations.MinimizeAnimation();
                         break;
                 }
+                
+                e.Handled = true;
             }
         }
 
