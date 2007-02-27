@@ -66,7 +66,7 @@ namespace stickiesSpace
 
         public void CreateStickyWindow(object sender, EventArgs e)
         {
-            StickyWindowModel stickyWindow = new StickyWindowModel();
+            StickyWindowModel stickyWindow = new StickyWindowModel(null);
             stickyWindow.Owner = this;
         }
 

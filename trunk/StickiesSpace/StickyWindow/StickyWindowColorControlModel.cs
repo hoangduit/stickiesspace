@@ -27,7 +27,29 @@ namespace StickyWindow
         public StickyWindowColorControlModel(StickyWindowModel stickyWindow)
         {
             _stickyWindowParent = stickyWindow;
+
+            CommandBinding CloseCmdBinding = new CommandBinding(CloseCmd, CloseCmdExecuted, CloseCmdCanExecute);
+            this.CommandBindings.Add(CloseCmdBinding);
         }
+
+
+        #region Commands
+
+        public static RoutedCommand CloseCmd = new RoutedUICommand("Close", "Close", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.Escape) }));
+
+        public void CloseCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            stickyWindowParent.isColorWindowOpen = false;
+            this.Close();
+        }
+
+        public void CloseCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        #endregion
 
 
         #region Properties

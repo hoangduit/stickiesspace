@@ -20,6 +20,8 @@
     <RotateTransform Angle="90"/>
   </TransformGroup>
 
+  <ScaleTransform x:Key="sliderScale" ScaleY=".75" />
+  
   <RadialGradientBrush x:Key="buttonGlow">
     <RadialGradientBrush.RelativeTransform>
       <TransformGroup>
@@ -140,7 +142,8 @@
 
 
             <!--Context Circle-->
-            <Border x:Name="contextCircle" Height="17" Width="17" Background="#ff000000" BorderBrush="#FF000000" BorderThickness="0" CornerRadius="11" Focusable="False">
+            <Border x:Name="contextCircle" Height="10" Width="10" Canvas.Top="1.5" Canvas.Left="1.5"  
+                    Background="#ff000000" BorderBrush="#FF000000" BorderThickness="0" CornerRadius="11" Focusable="False">
               <Grid>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="0.507*"/>
@@ -192,7 +195,7 @@
                 Duration="0:0:0.25" />
             </Storyboard>
 
-            <Storyboard x:Key="animationsRestore">
+            <local:StoryboardExtender x:Key="animationsRestore">
               <DoubleAnimation
                 Storyboard.TargetProperty="(Window.Height)"
                 From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
@@ -203,7 +206,7 @@
                 From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                 To="{Binding Path=OriginalSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
                 Duration="0:0:0.25" />
-            </Storyboard>
+            </local:StoryboardExtender>
 
             <Storyboard x:Key="animationsFitContent">
               <DoubleAnimation
@@ -259,13 +262,13 @@
                               ItemTemplate = "{StaticResource ColorItemTemplate}" />
 
                     <TextBlock Text="Alpha" Canvas.Top="40" Canvas.Left="19" Foreground="White" />
-                    <Slider x:Name="alpha" Value="1" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}"/>
+                    <Slider x:Name="alpha" Value="1" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}"/>
                     <TextBlock Text="Red" Canvas.Top="60" Canvas.Left="27" Foreground="White" />
-                    <Slider x:Name="red" Value=".5" Minimum="0" Maximum="1" Canvas.Top="60" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}" />
+                    <Slider x:Name="red" Value=".5" Minimum="0" Maximum="1" Canvas.Top="60" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
                     <TextBlock Text="Green" Canvas.Top="80" Canvas.Left="17" Foreground="White" />
-                    <Slider x:Name="green" Value=".5" Minimum="0" Maximum="1" Canvas.Top="80" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}" />
+                    <Slider x:Name="green" Value=".5" Minimum="0" Maximum="1" Canvas.Top="80" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
                     <TextBlock Text="Blue" Canvas.Top="100" Canvas.Left="25" Foreground="White" />
-                    <Slider x:Name="blue" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" RenderTransform="{DynamicResource sliderScale}" />
+                    <Slider x:Name="blue" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
 
                     <Border x:Name="testRect" Height="50" Width="50" Canvas.Top="130" Canvas.Left="75" CornerRadius="5" BorderThickness="0" />
 

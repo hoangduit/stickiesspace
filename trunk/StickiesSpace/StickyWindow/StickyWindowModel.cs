@@ -27,46 +27,6 @@ namespace StickyWindow
         }
 
 
-        public StickyWindowModel()
-        {
-            this.Name = "stickyWindow";
-            this.MinHeight = 50;
-            this.MinWidth = 100;
-            this.Height = 200;
-            this.Width = 200;
-            this.MyWindowState = WindowState.Normal;
-            this.Background = Brushes.Transparent;
-            this.AllowsTransparency = true;
-            this.WindowStyle = WindowStyle.None;
-            this.Title = "This is the stickyWindow";
-
-            this.Show();
-
-            Size oSize = new Size(200, 200);
-            this.OriginalSize = oSize;
-
-            StickyWindowCommands commands = new StickyWindowCommands(this);
-            this.sContextCircle.ContextMenu = commands.GetContextMenu();
-
-            this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
-
-            #region Event Wireup
-
-            this.sSlider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
-            this.sSlider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
-            this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
-            this.sContextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
-            this.sTextArea.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            this.sTextArea.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
-            this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
-
-            #endregion
-
-            this.color = Colors.LightBlue;
-            this.Opacity = 1;
-        }
-
-
         public StickyWindowModel(string DeSerializeXML)
         {
             this.Name = "stickyWindow";
@@ -80,27 +40,69 @@ namespace StickyWindow
 
             this.Show();
 
-            Deserialize(DeSerializeXML);
+            if (DeSerializeXML != null)
+                Deserialize(DeSerializeXML);
+            else
+            {
+                this.color = Colors.LightBlue;
+                Size oSize = new Size(200, 200);
+                this.OriginalSize = oSize;
+            }
 
-            StickyWindowCommands commands = new StickyWindowCommands(this);
-            this.sContextCircle.ContextMenu = commands.GetContextMenu();
+           
+            #region Event/Bindings Wireup
 
             this.SetContainerCanvasBindings(SetBindingMode.SetBinding);
-
-            #region Event Wireup
-
             this.sSlider.MouseEnter += new MouseEventHandler(slider_MouseEnter);
             this.sSlider.MouseLeave += new MouseEventHandler(slider_MouseLeave);
             this.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(scroller_ScrollChanged));
             this.sContextCircle.MouseLeftButtonDown += new MouseButtonEventHandler(contextCircle_MouseLeftButtonDown);
-            this.sTextArea.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
-            this.sTextArea.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
+            //this.sTextArea.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
+            //this.sTextArea.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
             this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
+
+            SetContextCircleMouseEventBindings(SetBindingMode.SetBinding);
+            
+            #endregion
+
+
+            #region CommandBindings
+
+            StickyWindowCommands commands = new StickyWindowCommands(this);
+            this.sContextCircle.ContextMenu = commands.GetContextMenu();
+            CommandBinding CloseCmdBinding = new CommandBinding(CloseCmd, commands.CloseCmdExecuted, commands.CloseCmdCanExecute);
+            CommandBinding MinimizeCmdBinding = new CommandBinding(MinimizeCmd, commands.MinizmizeCmdExecuted, commands.MinizmizeCmdCanExecute);
+            CommandBinding FitContentCmdBinding = new CommandBinding(FitContentCmd, commands.FitContentCmdExecuted, commands.FitContentCmdCanExecute);
+            CommandBinding RestoreCmdBinding = new CommandBinding(RestoreCmd, commands.RestoreCmdExecuted, commands.RestoreCmdCanExecute);
+            CommandBinding PrintCmdBinding = new CommandBinding(PrintCmd, commands.PrintCmdExecuted, commands.PrintCmdCanExecute);
+            CommandBinding ColorsCmdBinding = new CommandBinding(ColorsCmd, commands.ColorsCmdExecuted, commands.ColorsCmdCanExecute);
+
+            this.CommandBindings.Add(CloseCmdBinding);
+            this.CommandBindings.Add(MinimizeCmdBinding);
+            this.CommandBindings.Add(FitContentCmdBinding);
+            this.CommandBindings.Add(RestoreCmdBinding);
+            this.CommandBindings.Add(PrintCmdBinding);
+            this.CommandBindings.Add(ColorsCmdBinding);
 
             #endregion
 
             this.Opacity = 1;
         }
+
+
+        //Command Events
+        public static RoutedCommand CloseCmd = new RoutedUICommand("Close", "Close", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.T, ModifierKeys.Control) }));
+        public static RoutedCommand MinimizeCmd = new RoutedUICommand("Minimize", "Minimize", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.M, ModifierKeys.Control) }));
+        public static RoutedCommand RestoreCmd = new RoutedUICommand("Restore", "Restore", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.R, ModifierKeys.Control) }));
+        public static RoutedCommand FitContentCmd = new RoutedUICommand("Fit Content", "Fit Content", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.F, ModifierKeys.Control) }));
+        public static RoutedCommand PrintCmd = new RoutedUICommand("Print", "Print", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.P, ModifierKeys.Control) }));
+        public static RoutedCommand ColorsCmd = new RoutedUICommand("Colors", "Colors", typeof(System.Windows.Input.ICommand),
+            new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.K, ModifierKeys.Control) }));
 
 
         #region Properties
@@ -293,6 +295,23 @@ namespace StickyWindow
         }
 
 
+        internal void SetContextCircleMouseEventBindings(SetBindingMode BindingMode)
+        {
+            switch (BindingMode)
+            {
+                case SetBindingMode.SetBinding:
+                    this.sContextCircle.MouseEnter += new MouseEventHandler(sContextCircle_MouseEnter);
+                    this.sContextCircle.MouseLeave += new MouseEventHandler(sContextCircle_MouseLeave);
+                    break;
+
+                case SetBindingMode.ClearBinding:
+                    this.sContextCircle.RemoveHandler(Border.MouseEnterEvent, new MouseEventHandler(sContextCircle_MouseEnter));
+                    this.sContextCircle.RemoveHandler(Border.MouseLeaveEvent, new MouseEventHandler(sContextCircle_MouseLeave));
+                    break;
+            }
+        }
+
+
         public void ShowColorsControl()
         {
             StickyWindowColorControlModel stickyWindowColorControl = new StickyWindowColorControlModel(this);
@@ -403,6 +422,18 @@ namespace StickyWindow
 
         #region Events
 
+        void sContextCircle_MouseEnter(object sender, MouseEventArgs e)
+        {
+            StickyWindowAnimations animations = new StickyWindowAnimations(this);
+            animations.ContextGrowAnimation();
+        }
+
+        void sContextCircle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            StickyWindowAnimations animations = new StickyWindowAnimations(this);
+            animations.ContextShrinkAnimation();
+        }
+
         void StickyWindowModel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             StickyWindowModel stickyWindow = sender as StickyWindowModel;
@@ -425,11 +456,9 @@ namespace StickyWindow
         {
             if (e.ClickCount == 2)
             {
-                Border contextCircle = sender as Border;
-                StickyWindowModel stickyWindow = contextCircle.TemplatedParent as StickyWindowModel;
-                StickyWindowAnimations animations = new StickyWindowAnimations(stickyWindow);
+                StickyWindowAnimations animations = new StickyWindowAnimations(this);
 
-                switch (stickyWindow.MyWindowState)
+                switch (MyWindowState)
                 {
                     case WindowState.Minimized:
                         animations.RestoreAnimation();
@@ -439,7 +468,7 @@ namespace StickyWindow
                         animations.MinimizeAnimation();
                         break;
                 }
-                
+
                 e.Handled = true;
             }
         }
@@ -469,7 +498,6 @@ namespace StickyWindow
         #endregion
 
 
- 
     }
 
 

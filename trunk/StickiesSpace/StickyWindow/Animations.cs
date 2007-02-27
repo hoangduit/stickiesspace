@@ -52,20 +52,29 @@ namespace StickyWindow
         public void RestoreAnimation()
         {
             //Restore Animation
-            Storyboard animationsRestore = stickyWindow.Template.Resources["animationsRestore"] as Storyboard;
+            StoryboardExtender animationsRestore = stickyWindow.Template.Resources["animationsRestore"] as StoryboardExtender;
             animationsRestore.Completed += new EventHandler(animationsRestore_Completed);
+            animationsRestore.TargetElement = stickyWindow;
             animationsRestore.Begin(stickyWindow);
+            animationsRestore.Completed -= new EventHandler(animationsRestore_Completed);
         }
 
         void animationsRestore_Completed(object sender, EventArgs e)
         {
-            stickyWindow.MinHeight = 50;
-            stickyWindow.MinWidth = 100;
-            stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
-            stickyWindow.MyWindowState = WindowState.Normal;
+            Clock c = sender as Clock;
+            StoryboardExtender sbe = c.Timeline as StoryboardExtender;
+            StickyWindowModel sw = sbe.TargetElement as StickyWindowModel;
 
-            MyTextBox txt = stickyWindow.sTextArea;
+            sw.color = Colors.Red;
+            sw.MinHeight = 50;
+            sw.MinWidth = 100;
+            sw.ResizeMode = ResizeMode.CanResizeWithGrip;
+            sw.MyWindowState = WindowState.Normal;
+
+            MyTextBox txt = sw.sTextArea;
             txt.ActiveState = txt.PreviousActiveState;
+
+            
         }
 
 
@@ -84,6 +93,68 @@ namespace StickyWindow
             stickyWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
             stickyWindow.MyWindowState = WindowState.Normal;
         }
+
+
+        public void ContextGrowAnimation()
+        {
+            Border contextCircle = stickyWindow.sContextCircle;
+            
+            DoubleAnimation animationsContextGrowX = new DoubleAnimation(20, TimeSpan.FromMilliseconds(250));
+            animationsContextGrowX.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextGrowX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Border.WidthProperty));
+
+            DoubleAnimation animationsContextGrowY = new DoubleAnimation(20, TimeSpan.FromMilliseconds(250));
+            animationsContextGrowY.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextGrowY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Border.HeightProperty));
+
+            DoubleAnimation animationsContextMoveX = new DoubleAnimation(0, TimeSpan.FromMilliseconds(250));
+            animationsContextMoveX.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextMoveX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Canvas.LeftProperty));
+
+            DoubleAnimation animationsContextMoveY = new DoubleAnimation(0, TimeSpan.FromMilliseconds(250));
+            animationsContextMoveY.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextMoveY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Canvas.TopProperty));
+
+            Storyboard storyContextGrow = new Storyboard();
+            storyContextGrow.Children.Add(animationsContextGrowX);
+            storyContextGrow.Children.Add(animationsContextGrowY);
+            storyContextGrow.Children.Add(animationsContextMoveX);
+            storyContextGrow.Children.Add(animationsContextMoveY);
+
+            storyContextGrow.Begin(stickyWindow.sContextCircle);
+        }
+
+
+        public void ContextShrinkAnimation()
+        {
+            Border contextCircle = stickyWindow.sContextCircle;
+
+            DoubleAnimation animationsContextGrowX = new DoubleAnimation(10, TimeSpan.FromMilliseconds(250));
+            animationsContextGrowX.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextGrowX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Border.WidthProperty));
+
+            DoubleAnimation animationsContextGrowY = new DoubleAnimation(10, TimeSpan.FromMilliseconds(250));
+            animationsContextGrowY.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextGrowY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Border.HeightProperty));
+
+            DoubleAnimation animationsContextMoveX = new DoubleAnimation(1.5, TimeSpan.FromMilliseconds(250));
+            animationsContextMoveX.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextMoveX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Canvas.LeftProperty));
+
+            DoubleAnimation animationsContextMoveY = new DoubleAnimation(1.5, TimeSpan.FromMilliseconds(250));
+            animationsContextMoveY.SetValue(Storyboard.TargetNameProperty, contextCircle.Name);
+            animationsContextMoveY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath(Canvas.TopProperty));
+
+            Storyboard storyContextShrink = new Storyboard();
+            storyContextShrink.Children.Add(animationsContextGrowX);
+            storyContextShrink.Children.Add(animationsContextGrowY);
+            storyContextShrink.Children.Add(animationsContextMoveX);
+            storyContextShrink.Children.Add(animationsContextMoveY);
+
+            storyContextShrink.Begin(stickyWindow.sContextCircle);
+        }
+
+
 
 
     }

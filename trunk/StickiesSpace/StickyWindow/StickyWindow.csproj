@@ -46,6 +46,7 @@
     <Compile Include="ArithmeticConverter.cs" />
     <Compile Include="ColorItem.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="StoryboardExtender.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="LuminanceToBrushConverter.cs" />
     <Compile Include="MyScrollViewer.cs" />
