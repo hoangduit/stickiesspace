@@ -53,10 +53,13 @@ namespace StickyWindow
         {
             //Restore Animation
             StoryboardExtender animationsRestore = stickyWindow.Template.Resources["animationsRestore"] as StoryboardExtender;
+
+            //TODO fix handler stacking!!
+            animationsRestore.Completed -= new EventHandler(animationsRestore_Completed);
             animationsRestore.Completed += new EventHandler(animationsRestore_Completed);
+
             animationsRestore.TargetElement = stickyWindow;
             animationsRestore.Begin(stickyWindow);
-            animationsRestore.Completed -= new EventHandler(animationsRestore_Completed);
         }
 
         void animationsRestore_Completed(object sender, EventArgs e)
@@ -65,7 +68,6 @@ namespace StickyWindow
             StoryboardExtender sbe = c.Timeline as StoryboardExtender;
             StickyWindowModel sw = sbe.TargetElement as StickyWindowModel;
 
-            sw.color = Colors.Red;
             sw.MinHeight = 50;
             sw.MinWidth = 100;
             sw.ResizeMode = ResizeMode.CanResizeWithGrip;
@@ -73,8 +75,6 @@ namespace StickyWindow
 
             MyTextBox txt = sw.sTextArea;
             txt.ActiveState = txt.PreviousActiveState;
-
-            
         }
 
 
