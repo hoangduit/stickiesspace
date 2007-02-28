@@ -18,6 +18,14 @@ namespace StickyWindow
     public class MyTextBox : TextBox
     {
 
+        public MyTextBox()
+        {
+            this.FontSize = 30;
+            this.FontFamily = new FontFamily("Times");
+
+        }
+
+
         #region Private Properties
 
         private TextBoxActiveState _PreviousActiveState;

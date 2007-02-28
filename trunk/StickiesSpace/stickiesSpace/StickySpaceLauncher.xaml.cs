@@ -68,6 +68,7 @@ namespace stickiesSpace
         {
             StickyWindowModel stickyWindow = new StickyWindowModel(null);
             stickyWindow.Owner = this;
+            this.RegisterName(stickyWindow.Name, stickyWindow);
         }
 
 
@@ -102,6 +103,7 @@ namespace stickiesSpace
                 {
                     StickyWindowModel newSw = new StickyWindowModel(windows.Current.OuterXml);
                     newSw.Owner = this;
+                    this.RegisterName(newSw.Name, newSw);
                 }         
         }
 

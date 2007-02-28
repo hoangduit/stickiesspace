@@ -29,7 +29,7 @@ namespace StickyWindow
 
         public StickyWindowModel(string DeSerializeXML)
         {
-            this.Name = "stickyWindow";
+            this.Name = String.Format("stickyWindow_{0}", DateTime.Now.Ticks.ToString());
             this.MinHeight = 50;
             this.MinWidth = 100;
             this.MyWindowState = WindowState.Normal;
@@ -60,7 +60,6 @@ namespace StickyWindow
             //this.sTextArea.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(txt_LostKeyboardFocus);
             //this.sTextArea.MouseDoubleClick += new MouseButtonEventHandler(txt_MouseDoubleClick);
             this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowModel_MouseLeftButtonDown);
-
             SetContextCircleMouseEventBindings(SetBindingMode.SetBinding);
             
             #endregion
@@ -90,7 +89,8 @@ namespace StickyWindow
         }
 
 
-        //Command Events
+        #region Commands
+
         public static RoutedCommand CloseCmd = new RoutedUICommand("Close", "Close", typeof(System.Windows.Input.ICommand),
             new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.T, ModifierKeys.Control) }));
         public static RoutedCommand MinimizeCmd = new RoutedUICommand("Minimize", "Minimize", typeof(System.Windows.Input.ICommand),
@@ -104,9 +104,11 @@ namespace StickyWindow
         public static RoutedCommand ColorsCmd = new RoutedUICommand("Colors", "Colors", typeof(System.Windows.Input.ICommand),
             new InputGestureCollection(new InputGesture[] { new KeyGesture(Key.K, ModifierKeys.Control) }));
 
+        #endregion
+
 
         #region Properties
-        
+
         #region Custom Properties
 
         public WindowState MyWindowState
@@ -397,6 +399,7 @@ namespace StickyWindow
                             this.Height = 20;
                             this.Width = 20;
                             this.ResizeMode = ResizeMode.NoResize;
+                            this.sTextArea.TextWrapping = TextWrapping.NoWrap;
                         }
                         else
                         {

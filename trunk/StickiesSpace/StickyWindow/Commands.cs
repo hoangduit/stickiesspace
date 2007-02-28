@@ -3,6 +3,11 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media.Animation;
 using StickyWindow;
+using System.Windows.Documents;
+using System.IO;
+using System.Printing;
+using System.Windows.Xps;
+using System;
 
 namespace StickyWindow
 {
@@ -60,6 +65,7 @@ namespace StickyWindow
             m5 = new MenuItem();
             m5.Header = "Print";
             m5.CommandBindings.Add(PrintCmdBinding);
+            m5.Command = StickyWindowModel.PrintCmd;
 
             m6 = new MenuItem();
             m6.Header = "Colors";
@@ -133,6 +139,37 @@ namespace StickyWindow
         public void PrintCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             //Printstuff
+            FlowDocument printDoc = new FlowDocument();
+            printDoc.Blocks.Add(new Paragraph(new Run(stickyWindow.sTextArea.Text)));
+            printDoc.PagePadding = new Thickness(25);
+
+            TextRange source = new TextRange(printDoc.ContentStart, printDoc.ContentEnd);
+            MemoryStream stream = new MemoryStream();
+            source.Save(stream, DataFormats.Xaml);
+
+            // Create a XpsDocumentWriter object, open a Windows common print dialog.
+            // This methods returns a ref parameter that represents information about the dimensions of the printer media.
+            PrintDocumentImageableArea ia = null;
+            XpsDocumentWriter docWriter = PrintQueue.CreateXpsDocumentWriter(ref ia);
+
+            if (docWriter != null && ia != null)
+            {
+                DocumentPaginator paginator = ((IDocumentPaginatorSource)printDoc).DocumentPaginator;
+
+                // Change the PageSize and PagePadding for the document to match the CanvasSize for the printer device.
+                paginator.PageSize = new Size(ia.MediaSizeWidth, ia.MediaSizeHeight);
+                Thickness pagePadding = printDoc.PagePadding;
+                printDoc.PagePadding = new Thickness(
+                        Math.Max(ia.OriginWidth, pagePadding.Left),
+                        Math.Max(ia.OriginHeight, pagePadding.Top),
+                        Math.Max(ia.MediaSizeWidth - (ia.OriginWidth + ia.ExtentWidth), pagePadding.Right),
+                        Math.Max(ia.MediaSizeHeight - (ia.OriginHeight + ia.ExtentHeight), pagePadding.Bottom));
+                printDoc.ColumnWidth = double.PositiveInfinity;
+
+                // Send DocumentPaginator to the printer.
+                docWriter.Write(paginator);
+            }
+
         }
 
         public void PrintCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)

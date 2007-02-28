@@ -195,19 +195,6 @@
                 Duration="0:0:0.25" />
             </Storyboard>
 
-            <local:StoryboardExtender x:Key="animationsRestore">
-              <DoubleAnimation
-                Storyboard.TargetProperty="(Window.Height)"
-                From="{Binding Path=ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                To="{Binding Path=OriginalSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
-                Duration="0:0:0.25" />
-              <DoubleAnimation
-                Storyboard.TargetProperty="(Window.Width)"
-                From="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                To="{Binding Path=OriginalSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                Duration="0:0:0.25" />
-            </local:StoryboardExtender>
-
             <Storyboard x:Key="animationsFitContent">
               <DoubleAnimation
                 Storyboard.TargetProperty="(Window.Height)"

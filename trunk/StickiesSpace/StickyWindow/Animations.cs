@@ -39,27 +39,51 @@ namespace StickyWindow
             stickyWindow.ResizeMode = ResizeMode.NoResize;
             stickyWindow.OriginalSize = new Size(stickyWindow.ActualWidth, stickyWindow.ActualHeight);
             stickyWindow.MyWindowState = WindowState.Minimized;
+            stickyWindow.sSlider.MyVisibility = Visibility.Hidden;
 
             MyTextBox txt = stickyWindow.sTextArea;
             txt.PreviousActiveState = txt.ActiveState;
             txt.ActiveState = TextBoxActiveState.Inactive;
+            txt.TextWrapping = TextWrapping.NoWrap;
 
-            Storyboard animationsMinimize = stickyWindow.Template.Resources["animationsMinimize"] as Storyboard;
-            animationsMinimize.Begin(stickyWindow);
+            DoubleAnimation animHeight = new DoubleAnimation(stickyWindow.ActualHeight, 20, TimeSpan.FromMilliseconds(250));
+            DoubleAnimation animWidth = new DoubleAnimation(stickyWindow.ActualWidth, 20, TimeSpan.FromMilliseconds(250));
+
+            Storyboard.SetTargetName(animHeight, stickyWindow.Name);
+            Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
+
+            Storyboard.SetTargetName(animWidth, stickyWindow.Name);
+            Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
+
+            StoryboardExtender storyMin = new StoryboardExtender();
+            storyMin.Children.Add(animWidth);
+            storyMin.Children.Add(animHeight);
+
+            storyMin.Begin(stickyWindow.Owner);
         }
 
 
         public void RestoreAnimation()
         {
-            //Restore Animation
-            StoryboardExtender animationsRestore = stickyWindow.Template.Resources["animationsRestore"] as StoryboardExtender;
+            DoubleAnimation animHeight = new DoubleAnimation(stickyWindow.OriginalSize.Height, TimeSpan.FromMilliseconds(250));
+            DoubleAnimation animWidth = new DoubleAnimation(stickyWindow.OriginalSize.Width, TimeSpan.FromMilliseconds(250));
 
-            //TODO fix handler stacking!!
-            animationsRestore.Completed -= new EventHandler(animationsRestore_Completed);
-            animationsRestore.Completed += new EventHandler(animationsRestore_Completed);
+            Storyboard.SetTargetName(animHeight, stickyWindow.Name);
+            Storyboard.SetTargetProperty(animHeight, new PropertyPath(Window.HeightProperty));
 
-            animationsRestore.TargetElement = stickyWindow;
-            animationsRestore.Begin(stickyWindow);
+            Storyboard.SetTargetName(animWidth, stickyWindow.Name);
+            Storyboard.SetTargetProperty(animWidth, new PropertyPath(Window.WidthProperty));
+
+            StoryboardExtender storyRestore = new StoryboardExtender();
+            storyRestore.Children.Add(animWidth);
+            storyRestore.Children.Add(animHeight);
+            
+            storyRestore.Completed -= new EventHandler(animationsRestore_Completed);
+            storyRestore.Completed += new EventHandler(animationsRestore_Completed);
+
+            storyRestore.TargetElement = stickyWindow;
+            storyRestore.Begin(stickyWindow.Owner);
+
         }
 
         void animationsRestore_Completed(object sender, EventArgs e)
@@ -75,6 +99,7 @@ namespace StickyWindow
 
             MyTextBox txt = sw.sTextArea;
             txt.ActiveState = txt.PreviousActiveState;
+            txt.TextWrapping = TextWrapping.Wrap;
         }
 
 
