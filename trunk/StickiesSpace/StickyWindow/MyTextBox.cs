@@ -20,8 +20,8 @@ namespace StickyWindow
 
         public MyTextBox()
         {
-            this.FontSize = 30;
-            this.FontFamily = new FontFamily("Times");
+            //this.FontSize = 30;
+            //this.FontFamily = new FontFamily("Times");
 
         }
 

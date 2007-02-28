@@ -400,6 +400,7 @@ namespace StickyWindow
                             this.Width = 20;
                             this.ResizeMode = ResizeMode.NoResize;
                             this.sTextArea.TextWrapping = TextWrapping.NoWrap;
+                            UpdateToolTip();
                         }
                         else
                         {
@@ -418,6 +419,15 @@ namespace StickyWindow
                         break;
                 }
             }
+        }
+
+
+        private void UpdateToolTip()
+        {
+            ToolTip noteToolTip = new ToolTip();
+            noteToolTip.Content = new TextBlock(new Run(this.sTextArea.Text));
+            noteToolTip.Visibility = Visibility.Visible;
+            this.ToolTip = noteToolTip;
         }
 
         #endregion
@@ -465,10 +475,12 @@ namespace StickyWindow
                 {
                     case WindowState.Minimized:
                         animations.RestoreAnimation();
+                        this.ToolTip = null;
                         break;
 
                     case WindowState.Normal:
                         animations.MinimizeAnimation();
+                        UpdateToolTip();
                         break;
                 }
 
