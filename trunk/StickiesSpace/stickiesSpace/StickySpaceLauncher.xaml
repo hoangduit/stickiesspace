@@ -2,8 +2,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:cc="http://schemas.ConceptualBridge.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="stickiesSpace" Height="290" Width="168"
-    >
+    Title="StickySpaces" Height="0" Width="0" 
+        ContextMenuService.HasDropShadow="False" 
+        ShowInTaskbar="False" 
+        WindowState="Minimized" 
+        WindowStyle="None" 
+        Visibility="Collapsed" 
+        IsHitTestVisible="False" 
+        ContextMenuService.IsEnabled="False" 
+        IsEnabled="True" 
+        IsTabStop="False" 
+        Opacity="0">
 
   <Window.Resources>
     <LinearGradientBrush x:Key="backgroundBrush" >
@@ -14,7 +23,7 @@
   </Window.Resources>
   
     <Grid>
-      <StackPanel Background="{StaticResource backgroundBrush}">
+      <!--<StackPanel Background="{StaticResource backgroundBrush}">
         <Button Height="25" VerticalAlignment="Top" Content="Open StickyWindow" Margin="5" Click="CreateStickyWindow"/>
         <Button Height="25" VerticalAlignment="Top" Content="Serialize" Margin="5" Click="SerialzeState"/>
         <Button Height="25" VerticalAlignment="Top" Content="DeSerialize" Margin="5" Click="DeSerialzeState"/>
@@ -31,6 +40,6 @@
         <TextBlock  Name="upType" />
         
         <Button Content="resetCounts" Margin="5" Click="ResetCounts" />
-      </StackPanel>
+      </StackPanel>-->
     </Grid>
 </Window>

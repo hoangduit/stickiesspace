@@ -87,6 +87,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_556AD20DAA96423099376A46C13B2411"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_59FF5C47961A8199BD09BEF47C6C1F9C"
         "OwnerKey" = "8:_36590F8DB33E0E8E469D667DF7656175"
         "MsmSig" = "8:_UNDEFINED"
@@ -142,13 +148,13 @@
         "Entry"
         {
         "MsmKey" = "8:_B06182A7B8FABAA6467FA4027EB0D2A9"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B06182A7B8FABAA6467FA4027EB0D2A9"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -232,13 +238,13 @@
         "Entry"
         {
         "MsmKey" = "8:_C547CC4EEAEA55F686E22BAB474C218B"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_C547CC4EEAEA55F686E22BAB474C218B"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -274,13 +280,13 @@
         "Entry"
         {
         "MsmKey" = "8:_D04757A1E4E066E47A1635BCAA6847D6"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D04757A1E4E066E47A1635BCAA6847D6"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -310,13 +316,13 @@
         "Entry"
         {
         "MsmKey" = "8:_E584E884724743067F85FC6FA12693B8"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_E584E884724743067F85FC6FA12693B8"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -673,7 +679,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:StickyWindow, Version=1.0.2615.29314, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:StickyWindow, Version=1.0.2616.28233, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_245115FE48DA61FF25CA96C4F3B46A55"
@@ -760,6 +766,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_556AD20DAA96423099376A46C13B2411"
+            {
+            "SourcePath" = "8:..\\stickiesSpace\\StickyIconLikeWhoa.ico"
+            "TargetName" = "8:StickyIconLikeWhoa.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_59FF5C47961A8199BD09BEF47C6C1F9C"
@@ -1129,6 +1155,28 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_4C1A4A2A751A4F578FAFEA63C7810B7F"
+                    {
+                    "Name" = "8:StickySpaces"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_0FB9FD2C9426479B8DC2CF4A907F5B67"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_608E026011F14EE7B2DCAF2259C897B6"
+                    {
+                    "Name" = "8:Startup"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_FAB62FB329274B12A1A65C1C01BAB6C6"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_F86020A2225A48FB9EDE51ECE57DAD61"
@@ -1157,25 +1205,25 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:StickySpaces"
-        "ProductCode" = "8:{9FA427E3-A6A9-459D-B9CE-2C92FAE7F101}"
-        "PackageCode" = "8:{472DE91D-E435-49B5-95D3-EBE9E028F6E0}"
+        "ProductName" = "8:StickySpaces 0.2"
+        "ProductCode" = "8:{9F280C6E-2773-46A4-ACAC-722D6E8A31DC}"
+        "PackageCode" = "8:{11B7A5C2-DFFB-49B1-9BBF-DD6D325E6554}"
         "UpgradeCode" = "8:{EE98F9C9-E8C1-4E94-9E9D-A5E359F467CA}"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.1.0"
+        "InstallAllUsers" = "11:TRUE"
+        "ProductVersion" = "8:0.2.0"
         "Manufacturer" = "8:ConceptualBridge"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:StickySpacesInstaller"
+        "Title" = "8:StickySpaces Installer"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Forrest Miller"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_556AD20DAA96423099376A46C13B2411"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1278,6 +1326,48 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_195E889F26D746CB8236E986EA13EA17"
+            {
+            "Name" = "8:StickySpaces"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+            "Folder" = "8:_4F15CAF66F72402486E398B7DC7C9C64"
+            "WorkingFolder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
+            "Icon" = "8:_556AD20DAA96423099376A46C13B2411"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6D971E18F84B4D6489157C7BE6B30D50"
+            {
+            "Name" = "8:StickySpaces"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+            "Folder" = "8:_4C1A4A2A751A4F578FAFEA63C7810B7F"
+            "WorkingFolder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
+            "Icon" = "8:_556AD20DAA96423099376A46C13B2411"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E45F70D46C204C2C83000E0C126F304A"
+            {
+            "Name" = "8:StickySpaces"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+            "Folder" = "8:_608E026011F14EE7B2DCAF2259C897B6"
+            "WorkingFolder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
+            "Icon" = "8:_556AD20DAA96423099376A46C13B2411"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {

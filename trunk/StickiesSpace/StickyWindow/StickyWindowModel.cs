@@ -37,6 +37,7 @@ namespace StickyWindow
             this.AllowsTransparency = true;
             this.WindowStyle = WindowStyle.None;
             this.Title = "This is the stickyWindow";
+            this.ShowInTaskbar = false;
 
             this.Show();
 

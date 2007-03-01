@@ -30,6 +30,7 @@ namespace StickyWindow
 
             CommandBinding CloseCmdBinding = new CommandBinding(CloseCmd, CloseCmdExecuted, CloseCmdCanExecute);
             this.CommandBindings.Add(CloseCmdBinding);
+            this.ShowInTaskbar = false;
         }
 
 

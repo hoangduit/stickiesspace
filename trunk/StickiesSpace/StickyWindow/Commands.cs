@@ -24,7 +24,6 @@ namespace StickyWindow
         public StickyWindowModel stickyWindow
         {
             get { return _stickyWindow; }
-            set { _stickyWindow = value; }
         }
 
 
