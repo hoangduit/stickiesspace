@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Resources;
 using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -60,11 +61,18 @@ namespace stickiesSpace
         //}
         #endregion
 
+        static Uri iconUri = new Uri(@"pack://application:,,,/stickiesSpace;component/Resources/StickyIcon.ico");
+        static Stream iconStream = System.Windows.Application.GetResourceStream(iconUri).Stream;
+
         NotifyIcon notifyIcon;
 
         public Window1()
         {
             InitializeComponent();
+
+            IconBitmapDecoder icon = new IconBitmapDecoder(iconUri, BitmapCreateOptions.None, BitmapCacheOption.Default);
+            this.Icon = icon.Frames[0];
+
             this.Closing += new System.ComponentModel.CancelEventHandler(Window1_Closing);
             this.Loaded += new RoutedEventHandler(Window1_Loaded);
         }
@@ -139,7 +147,8 @@ namespace stickiesSpace
             this.notifyIcon = new NotifyIcon();
             this.notifyIcon.BalloonTipText = "Welcome to StickySpaces!";
             this.notifyIcon.Text = "StickySpaces";
-            this.notifyIcon.Icon = new System.Drawing.Icon("StickyIconLikeWhoa.ico");
+            
+            this.notifyIcon.Icon = new Icon(iconStream);
             this.notifyIcon.Visible = true;
             this.notifyIcon.ShowBalloonTip(500);
             this.notifyIcon.ContextMenu = commands.GetContextMenu();

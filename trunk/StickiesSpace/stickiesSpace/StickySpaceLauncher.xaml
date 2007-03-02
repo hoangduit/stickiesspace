@@ -2,44 +2,25 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:cc="http://schemas.ConceptualBridge.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="StickySpaces" Height="0" Width="0" 
-        ContextMenuService.HasDropShadow="False" 
+    Title="StickySpaces" Height="100" Width="300" 
         ShowInTaskbar="False" 
-        WindowState="Minimized" 
+        WindowState="Normal" 
         WindowStyle="None" 
+        AllowsTransparency="False"
+        Background="Transparent" 
         Visibility="Collapsed" 
         IsHitTestVisible="False" 
         ContextMenuService.IsEnabled="False" 
         IsEnabled="True" 
         IsTabStop="False" 
-        Opacity="0">
+        WindowStartupLocation="CenterScreen">
 
   <Window.Resources>
-    <LinearGradientBrush x:Key="backgroundBrush" >
-      <GradientStop Color="LightGreen" Offset="0.0" />
-      <GradientStop Color="White" Offset="0.55" />
-      <GradientStop Color="LightGreen" Offset="1.0" />
-    </LinearGradientBrush>
+
   </Window.Resources>
   
-    <Grid>
-      <!--<StackPanel Background="{StaticResource backgroundBrush}">
-        <Button Height="25" VerticalAlignment="Top" Content="Open StickyWindow" Margin="5" Click="CreateStickyWindow"/>
-        <Button Height="25" VerticalAlignment="Top" Content="Serialize" Margin="5" Click="SerialzeState"/>
-        <Button Height="25" VerticalAlignment="Top" Content="DeSerialize" Margin="5" Click="DeSerialzeState"/>
-        
-        <Label Height="25" Name="lblHit2" VerticalAlignment="Top" HorizontalAlignment="Center">[debug1]</Label>
-        <Label Height="25" Name="lblHit" VerticalAlignment="Top" HorizontalAlignment="Center">[debug2]</Label>
-
-        <TextBlock  Margin="5" Text="MouseDown:" />
-        <TextBox Name="txtCustomWindowDown" Width="50"/>
-        <TextBlock  Name="downType" />
-
-        <TextBlock  Margin="5" Text="MouseUp:" />
-        <TextBox Name="txtCustomWindowUp" Width="50" />
-        <TextBlock  Name="upType" />
-        
-        <Button Content="resetCounts" Margin="5" Click="ResetCounts" />
-      </StackPanel>-->
-    </Grid>
+    <Canvas>
+      <TextBlock Text="Loading..." />
+    </Canvas>
+  
 </Window>

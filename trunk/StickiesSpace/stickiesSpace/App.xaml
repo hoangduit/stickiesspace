@@ -4,6 +4,8 @@
     StartupUri="StickySpaceLauncher.xaml"
     >
     <Application.Resources>
-         
+
     </Application.Resources>
+
+
 </Application>

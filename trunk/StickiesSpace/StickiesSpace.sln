@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyWindow", "StickyWindo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickySpaces", "stickiesSpace\StickySpaces.csproj", "{37FFF18E-3C86-4123-97EF-B6CF51FA0DD9}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "StickySpacesInstaller", "StickySpacesInstaller\StickySpacesInstaller.vdproj", "{ABB1FB1D-02DF-4E63-96FB-91E3C467E87C}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "StickySpacesInstaller", "StickySpacesInstaller\StickySpacesInstaller.vdproj", "{1168BACB-C1B7-445A-8F92-0FAE7EEABC41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +21,8 @@ Global
 		{37FFF18E-3C86-4123-97EF-B6CF51FA0DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37FFF18E-3C86-4123-97EF-B6CF51FA0DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37FFF18E-3C86-4123-97EF-B6CF51FA0DD9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABB1FB1D-02DF-4E63-96FB-91E3C467E87C}.Debug|Any CPU.ActiveCfg = Debug
-		{ABB1FB1D-02DF-4E63-96FB-91E3C467E87C}.Release|Any CPU.ActiveCfg = Release
-		{ABB1FB1D-02DF-4E63-96FB-91E3C467E87C}.Release|Any CPU.Build.0 = Release
+		{1168BACB-C1B7-445A-8F92-0FAE7EEABC41}.Debug|Any CPU.ActiveCfg = Debug
+		{1168BACB-C1B7-445A-8F92-0FAE7EEABC41}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

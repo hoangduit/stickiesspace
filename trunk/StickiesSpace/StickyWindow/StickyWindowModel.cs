@@ -21,6 +21,9 @@ namespace StickyWindow
     public class StickyWindowModel : Window
     {
 
+        Uri iconUri = new Uri(@"pack://application:,,,/stickiesSpace;component/Resources/StickyIcon.ico");
+        
+
         static StickyWindowModel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StickyWindowModel), new FrameworkPropertyMetadata(typeof(StickyWindowModel)));
@@ -38,6 +41,9 @@ namespace StickyWindow
             this.WindowStyle = WindowStyle.None;
             this.Title = "This is the stickyWindow";
             this.ShowInTaskbar = false;
+
+            IconBitmapDecoder icon = new IconBitmapDecoder(iconUri, BitmapCreateOptions.None, BitmapCacheOption.Default);
+            this.Icon = icon.Frames[0];
 
             this.Show();
 
@@ -436,13 +442,13 @@ namespace StickyWindow
 
         #region Events
 
-        void sContextCircle_MouseEnter(object sender, MouseEventArgs e)
+        void sContextCircle_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             StickyWindowAnimations animations = new StickyWindowAnimations(this);
             animations.ContextGrowAnimation();
         }
 
-        void sContextCircle_MouseLeave(object sender, MouseEventArgs e)
+        void sContextCircle_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             StickyWindowAnimations animations = new StickyWindowAnimations(this);
             animations.ContextShrinkAnimation();
@@ -489,14 +495,14 @@ namespace StickyWindow
             }
         }
 
-        void slider_MouseLeave(object sender, MouseEventArgs e)
+        void slider_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             MySlider slider = (MySlider)sender;
             slider.AnimateSlider(SliderAnimateMode.Hide);
             e.Handled = true;
         }
 
-        void slider_MouseEnter(object sender, MouseEventArgs e)
+        void slider_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             MySlider slider = (MySlider)sender;
             slider.AnimateSlider(SliderAnimateMode.Show);

@@ -13,13 +13,13 @@ using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("stickiesSpace")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("StickySpaces")]
+[assembly: AssemblyDescription("WPF desktop sticky notes")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("stickiesSpace")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("ConceptualBridge")]
+[assembly: AssemblyProduct("StickySpaces")]
+[assembly: AssemblyCopyright("whatever")]
+[assembly: AssemblyTrademark("shyeah")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
@@ -60,4 +60,4 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("0.2.*")]
