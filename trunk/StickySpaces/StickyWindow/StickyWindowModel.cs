@@ -52,6 +52,7 @@ namespace StickyWindow
             else
             {
                 this.color = Colors.LightBlue;
+                this.textColor = Colors.Black;
                 Size oSize = new Size(200, 200);
                 this.OriginalSize = oSize;
             }
@@ -141,6 +142,17 @@ namespace StickyWindow
                 //update all colored elements colors
                 this.sTextArea.Background = new SolidColorBrush(_color);
                 this.sBorder.BorderBrush = new SolidColorBrush(_color);
+            }
+        }
+
+        private Color _textColor;
+        public Color textColor
+        {
+            get { return _textColor; }
+            set
+            {
+                _textColor = value;
+                this.sTextArea.Foreground = new SolidColorBrush(_textColor);
             }
         }
 
@@ -365,8 +377,11 @@ namespace StickyWindow
 
             //color
             xmlout.WriteStartElement("WindowColor");
-            xmlout.WriteAttributeString("Color", new SolidColorBrush(
+            xmlout.WriteAttributeString("NoteColor", new SolidColorBrush(
                                                     Color.FromArgb(this.color.A, this.color.R, this.color.G, this.color.B)
+                                                                      ).Color.ToString());
+            xmlout.WriteAttributeString("TextColor", new SolidColorBrush(
+                                                    Color.FromArgb(this.textColor.A, this.textColor.R, this.textColor.G, this.textColor.B)
                                                                       ).Color.ToString());
             xmlout.WriteEndElement();
 
@@ -422,7 +437,8 @@ namespace StickyWindow
                         break;
 
                     case "WindowColor":
-                        this.color = (Color)ColorConverter.ConvertFromString(attribNode.Attributes["Color"].Value);
+                        this.color = (Color)ColorConverter.ConvertFromString(attribNode.Attributes["NoteColor"].Value);
+                        this.textColor = (Color)ColorConverter.ConvertFromString(attribNode.Attributes["TextColor"].Value);
                         break;
                 }
             }

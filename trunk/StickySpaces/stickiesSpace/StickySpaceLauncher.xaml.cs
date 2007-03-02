@@ -19,6 +19,7 @@ using System.Windows.Markup;
 using StickyWindow;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Diagnostics;
 
 
 namespace StickySpaces
@@ -68,6 +69,25 @@ namespace StickySpaces
 
         public Window1()
         {
+
+            #region Uninstall Catcher
+            string[] args=Environment.GetCommandLineArgs();
+            foreach (string arg in args)
+                if (arg.Split('=')[0].ToLower() == "/u")
+                {
+                    string guid = arg.Split('=')[1];
+                    string path = Environment.GetFolderPath(System.Environment.SpecialFolder.System);
+                    string str = path + "\\msiexec.exe";
+                    ProcessStartInfo pi = new ProcessStartInfo(str);
+                    pi.Arguments = "/i " + guid;
+                    pi.UseShellExecute = false;
+                    Process.Start(pi);
+                    this.Close();
+                    return;
+                }
+            #endregion
+
+
             InitializeComponent();
 
             IconBitmapDecoder icon = new IconBitmapDecoder(iconUri, BitmapCreateOptions.None, BitmapCacheOption.Default);
@@ -90,7 +110,7 @@ namespace StickySpaces
 
         public void SerialzeState(object sender, EventArgs e)
         {
-            XmlTextWriter serializeWriter = new XmlTextWriter("stickySpacesState.xml", Encoding.UTF8);
+            XmlTextWriter serializeWriter = new XmlTextWriter(String.Format(@"{0}\stickySpacesState.xml", System.Windows.Forms.Application.UserAppDataPath), Encoding.UTF8);
 
             serializeWriter.WriteStartDocument();
             serializeWriter.WriteStartElement("StickySpacesWindows");
@@ -109,7 +129,7 @@ namespace StickySpaces
             XmlDocument stateDoc = new XmlDocument();
             try
             {
-                stateDoc.Load("stickySpacesState.xml");
+                stateDoc.Load(String.Format(@"{0}\stickySpacesState.xml", System.Windows.Forms.Application.UserAppDataPath));
                 StringReader reader = new StringReader(stateDoc.InnerXml);
                 XPathDocument navDoc = new XPathDocument(reader);
                 XPathNavigator nav = navDoc.CreateNavigator();
@@ -150,7 +170,7 @@ namespace StickySpaces
 
             this.notifyIcon.Icon = new Icon(iconStream);
             this.notifyIcon.Visible = true;
-            this.notifyIcon.ShowBalloonTip(500);
+            this.notifyIcon.ShowBalloonTip(250);
             this.notifyIcon.ContextMenu = commands.GetContextMenu();
             this.notifyIcon.Click += new EventHandler(notifyIcon_Click);
             this.DeSerialzeState(this, null);

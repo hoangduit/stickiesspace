@@ -24,3 +24,9 @@
     {
         Top, Right, Bottom, Left
     }
+
+
+    public enum ColorControlSliders
+    {
+        Note, Text
+    }

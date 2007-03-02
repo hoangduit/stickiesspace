@@ -56,7 +56,6 @@ namespace StickyWindow
         #region Properties
 
         private StickyWindowModel _stickyWindowParent;
-        private Color _currColor;
 
         public StickyWindowModel stickyWindowParent
         {
@@ -64,26 +63,45 @@ namespace StickyWindow
             set { _stickyWindowParent = value; }
         }
 
-        public Color currColor
+        private Color _currNoteColor;
+        public Color currNoteColor
         {
             get 
             { 
                 return Color.FromScRgb(
-                        (float)(double)sAlpha.Value,
-                        (float)(double)sRed.Value,
-                        (float)(double)sGreen.Value,
-                        (float)(double)sBlue.Value); 
+                        (float)(double)sAlphaNote.Value,
+                        (float)(double)sRedNote.Value,
+                        (float)(double)sGreenNote.Value,
+                        (float)(double)sBlueNote.Value); 
             }
             set
             {
-                _currColor = value;
-                BindSliders(value);
+                _currNoteColor = value;
+                BindSliders(value, ColorControlSliders.Note);
             }
         }
 
-        public ComboBox colorList
+        private Color _currTextColor;
+        public Color currTextColor
         {
-            get { return this.Template.FindName("colorList", this) as ComboBox; }
+            get
+            {
+                return Color.FromScRgb(
+                        (float)(double)sAlphaText.Value,
+                        (float)(double)sRedText.Value,
+                        (float)(double)sGreenText.Value,
+                        (float)(double)sBlueText.Value);
+            }
+            set
+            {
+                _currTextColor = value;
+                BindSliders(value, ColorControlSliders.Text);
+            }
+        }
+
+        public ComboBox colorListNote
+        {
+            get { return this.Template.FindName("colorListN", this) as ComboBox; }
         }
 
         public Button closer
@@ -91,24 +109,54 @@ namespace StickyWindow
             get { return this.Template.FindName("close", this) as Button; }
         }
 
-        public Slider sAlpha
+        public Button applier
         {
-            get { return this.Template.FindName("alpha", this) as Slider; }
+            get { return this.Template.FindName("apply", this) as Button; }
         }
 
-        public Slider sRed
+        public Slider sAlphaNote
         {
-            get { return this.Template.FindName("red", this) as Slider; }
+            get { return this.Template.FindName("alphaN", this) as Slider; }
         }
 
-        public Slider sGreen
+        public Slider sRedNote
         {
-            get { return this.Template.FindName("green", this) as Slider; }
+            get { return this.Template.FindName("redN", this) as Slider; }
         }
 
-        public Slider sBlue
+        public Slider sGreenNote
         {
-            get { return this.Template.FindName("blue", this) as Slider; }
+            get { return this.Template.FindName("greenN", this) as Slider; }
+        }
+
+        public Slider sBlueNote
+        {
+            get { return this.Template.FindName("blueN", this) as Slider; }
+        }
+
+        public ComboBox colorListText
+        {
+            get { return this.Template.FindName("colorListT", this) as ComboBox; }
+        }
+
+        public Slider sAlphaText
+        {
+            get { return this.Template.FindName("alphaT", this) as Slider; }
+        }
+
+        public Slider sRedText
+        {
+            get { return this.Template.FindName("redT", this) as Slider; }
+        }
+
+        public Slider sGreenText
+        {
+            get { return this.Template.FindName("greenT", this) as Slider; }
+        }
+
+        public Slider sBlueText
+        {
+            get { return this.Template.FindName("blueT", this) as Slider; }
         }
 
         public Border testRect
@@ -116,26 +164,42 @@ namespace StickyWindow
             get { return this.Template.FindName("testRect", this) as Border; }
         }
 
+        public TextBlock testText
+        {
+            get { return this.Template.FindName("testText", this) as TextBlock; }
+        }
 
         #endregion
 
 
         #region Events & Such
 
-        void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        void ColorSliderNote_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            BindColor();
+            BindColorTest(ColorControlSliders.Note);
         }
 
-
-        void colorList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void colorListNote_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox colorList = sender as ComboBox;
-            ColorItem selectedColor = colorList.SelectedValue as ColorItem;
-            currColor = selectedColor.Brush.Color;
-            BindColor();
+            ColorItem selectedColor = colorListNote.SelectedValue as ColorItem;
+            currNoteColor = selectedColor.Brush.Color;
+            BindColorTest(ColorControlSliders.Note);
         }
 
+
+        void ColorSliderText_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            BindColorTest(ColorControlSliders.Text);
+        }
+
+        void colorListText_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox colorList = sender as ComboBox;
+            ColorItem selectedColor = colorListText.SelectedValue as ColorItem;
+            currTextColor = selectedColor.Brush.Color;
+            BindColorTest(ColorControlSliders.Text);
+        }
 
         void StickyWindowColorControlModel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -149,39 +213,81 @@ namespace StickyWindow
             this.Close();
         }
 
+        void applier_Click(object sender, RoutedEventArgs e)
+        {
+            BindColorApply();
+        }
+
         #endregion
 
 
         #region Methods
 
-        private void BindColor()
+        private void BindColorTest(ColorControlSliders which)
         {
-            testRect.Background = new SolidColorBrush(currColor);
-            stickyWindowParent.color = currColor;
+            switch (which)
+            {
+                case ColorControlSliders.Note:
+                    testRect.Background = new SolidColorBrush(currNoteColor);
+                    break;
+
+                case ColorControlSliders.Text:
+                    testText.Foreground = new SolidColorBrush(currTextColor);
+                    break;
+            }            
         }
 
 
-        private void BindSliders(Color color)
+        private void BindColorApply()
         {
-            this.sAlpha.Value = color.ScA;
-            this.sRed.Value = color.ScR;
-            this.sGreen.Value = color.ScG;
-            this.sBlue.Value = color.ScB;
+            stickyWindowParent.color = currNoteColor;
+            stickyWindowParent.textColor = currTextColor;
+        }
+
+
+        private void BindSliders(Color color, ColorControlSliders which)
+        {
+            switch (which)
+            {
+                case ColorControlSliders.Note:
+                    this.sAlphaNote.Value = color.ScA;
+                    this.sRedNote.Value = color.ScR;
+                    this.sGreenNote.Value = color.ScG;
+                    this.sBlueNote.Value = color.ScB;
+                    break;
+
+                case ColorControlSliders.Text:
+                    this.sAlphaText.Value = color.ScA;
+                    this.sRedText.Value = color.ScR;
+                    this.sGreenText.Value = color.ScG;
+                    this.sBlueText.Value = color.ScB;
+                    break;
+            }
         }
 
 
         public void Initialize()
         {
-            BindSliders(stickyWindowParent.color);
-            BindColor();
+            BindSliders(stickyWindowParent.color, ColorControlSliders.Note);
+            BindSliders(stickyWindowParent.textColor, ColorControlSliders.Text);
+            BindColorTest(ColorControlSliders.Note);
+            BindColorTest(ColorControlSliders.Text);
 
-            this.sAlpha.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.sRed.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.sGreen.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
-            this.sBlue.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSlider_ValueChanged);
+            this.sAlphaNote.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderNote_ValueChanged);
+            this.sRedNote.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderNote_ValueChanged);
+            this.sGreenNote.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderNote_ValueChanged);
+            this.sBlueNote.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderNote_ValueChanged);
+            this.colorListNote.SelectionChanged += new SelectionChangedEventHandler(colorListNote_SelectionChanged);
+
+            this.sAlphaText.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderText_ValueChanged);
+            this.sRedText.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderText_ValueChanged);
+            this.sGreenText.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderText_ValueChanged);
+            this.sBlueText.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ColorSliderText_ValueChanged);
+            this.colorListText.SelectionChanged += new SelectionChangedEventHandler(colorListText_SelectionChanged);
+
             this.closer.Click += new RoutedEventHandler(closer_Click);
+            this.applier.Click += new RoutedEventHandler(applier_Click);
             this.MouseLeftButtonDown += new MouseButtonEventHandler(StickyWindowColorControlModel_MouseLeftButtonDown);
-            this.colorList.SelectionChanged += new SelectionChangedEventHandler(colorList_SelectionChanged);
         }
 
 

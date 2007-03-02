@@ -80,6 +80,30 @@
     </Setter>
   </Style>
 
+
+  <LinearGradientBrush x:Key="LightBrush" StartPoint="0,0" EndPoint="0,1">
+    <GradientBrush.GradientStops>
+      <GradientStopCollection>
+        <GradientStop Color="#FFF" Offset="0.0"/>
+        <GradientStop Color="#EEE" Offset="1.0"/>
+      </GradientStopCollection>
+    </GradientBrush.GradientStops>
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="TabBackgroundBrush" EndPoint="0.494,0.889" StartPoint="0.494,0.028">
+    <GradientStop Color="#99FFFFFF" Offset="0"/>
+    <GradientStop Color="{Binding Path=Background, ElementName=container}" Offset="1"/>
+  </LinearGradientBrush>
+
+
+  <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#222" />
+
+  <SolidColorBrush x:Key="DisabledBorderBrush" Color="#222" />
+
+  <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#222" />
+
+
+  
   
   
   <Style TargetType="{x:Type local:StickyWindowModel}">
@@ -224,10 +248,6 @@
   </Style>
 
 
-
-
-
-
     <Style TargetType="{x:Type local:StickyWindowColorControlModel}">
       <Setter Property="Background" Value="Transparent" />      
         <Setter Property="Template">
@@ -240,30 +260,104 @@
                       <DropShadowBitmapEffect Softness=".8" />
                     </Canvas.BitmapEffect>
 
+                    
                     <Border BorderThickness="1" CornerRadius="5" BorderBrush="White" Background="#aaC78C39"
                           Height="{Binding Path=ActualHeight, ElementName=colorContainer}"
                           Width="{Binding Path=ActualWidth, ElementName=colorContainer}" />
 
-                    <ComboBox x:Name="colorList" Height="22" Width="150" Canvas.Left="14" Canvas.Top="10"
-                              ItemsSource="{Binding}"
-                              ItemTemplate = "{StaticResource ColorItemTemplate}" />
 
-                    <TextBlock Text="Alpha" Canvas.Top="40" Canvas.Left="19" Foreground="White" />
-                    <Slider x:Name="alpha" Value="1" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}"/>
-                    <TextBlock Text="Red" Canvas.Top="60" Canvas.Left="27" Foreground="White" />
-                    <Slider x:Name="red" Value=".5" Minimum="0" Maximum="1" Canvas.Top="60" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
-                    <TextBlock Text="Green" Canvas.Top="80" Canvas.Left="17" Foreground="White" />
-                    <Slider x:Name="green" Value=".5" Minimum="0" Maximum="1" Canvas.Top="80" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
-                    <TextBlock Text="Blue" Canvas.Top="100" Canvas.Left="25" Foreground="White" />
-                    <Slider x:Name="blue" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                    <TabControl Background="Transparent" BorderThickness="0" BorderBrush="Transparent" 
+                                Height="220" Canvas.Top="-1" 
+                                Width="220" Canvas.Left="-1" >
+                      <TabItem Header="Note Color">
+                        <Canvas>
+                          <ComboBox x:Name="colorListN" Height="22" Width="150" Canvas.Left="14" Canvas.Top="10"
+                                    ItemsSource="{Binding}"
+                                    ItemTemplate = "{StaticResource ColorItemTemplate}" />
 
-                    <Border x:Name="testRect" Height="50" Width="50" Canvas.Top="130" Canvas.Left="75" CornerRadius="5" BorderThickness="0" />
+                          <TextBlock Text="Alpha" Canvas.Top="40" Canvas.Left="19" Foreground="White" />
+                          <Slider x:Name="alphaN" Value="1" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}"/>
+                          <TextBlock Text="Red" Canvas.Top="60" Canvas.Left="27" Foreground="White" />
+                          <Slider x:Name="redN" Value=".5" Minimum="0" Maximum="1" Canvas.Top="60" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                          <TextBlock Text="Green" Canvas.Top="80" Canvas.Left="17" Foreground="White" />
+                          <Slider x:Name="greenN" Value=".5" Minimum="0" Maximum="1" Canvas.Top="80" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                          <TextBlock Text="Blue" Canvas.Top="100" Canvas.Left="25" Foreground="White" />
+                          <Slider x:Name="blueN" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                        </Canvas>
+                      </TabItem>
 
+                      <TabItem Header="Text Color">
+                        <Canvas>
+                          <ComboBox x:Name="colorListT" Height="22" Width="150" Canvas.Left="14" Canvas.Top="10"
+                                    ItemsSource="{Binding}"
+                                    ItemTemplate = "{StaticResource ColorItemTemplate}" />
+
+                          <TextBlock Text="Alpha" Canvas.Top="40" Canvas.Left="19" Foreground="White" />
+                          <Slider x:Name="alphaT" Value="1" Minimum="0" Maximum="1" Canvas.Top="40" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}"/>
+                          <TextBlock Text="Red" Canvas.Top="60" Canvas.Left="27" Foreground="White" />
+                          <Slider x:Name="redT" Value=".5" Minimum="0" Maximum="1" Canvas.Top="60" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                          <TextBlock Text="Green" Canvas.Top="80" Canvas.Left="17" Foreground="White" />
+                          <Slider x:Name="greenT" Value=".5" Minimum="0" Maximum="1" Canvas.Top="80" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                          <TextBlock Text="Blue" Canvas.Top="100" Canvas.Left="25" Foreground="White" />
+                          <Slider x:Name="blueT" Value=".5" Minimum="0" Maximum="1" Canvas.Top="100" Canvas.Left="50" Width="100" RenderTransform="{StaticResource sliderScale}" />
+                        </Canvas>
+                      </TabItem>
+                    </TabControl>
+
+                    <Border Background="Red" x:Name="testRect" Height="40" Width="80" Canvas.Top="150" Canvas.Left="60" CornerRadius="5" BorderThickness="0">
+                      <TextBlock x:Name="testText" Text="Sample Text" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                    
                     <Button x:Name="close" Content="X" Foreground="White" FontSize="8" Background="Transparent" Height="19" Width="19"
                             Canvas.Right="5" Canvas.Top="5" />
+
+                    <Button x:Name="apply" Content="Apply" Foreground="White" FontSize="10" Background="Transparent" Height="25" Width="45"
+                            Canvas.Right="10" Canvas.Top="165" />
                     
                   </Canvas>
 
+                  <ControlTemplate.Resources>
+                    
+                    <Style TargetType="{x:Type TabItem}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid>
+                              <Border
+                                Name="Border"
+                                Margin="5,2,-4,0"
+                                Background="{StaticResource LightBrush}"
+                                BorderBrush="{StaticResource SolidBorderBrush}"
+                                BorderThickness="1,1,1,1"
+                                CornerRadius="2,12,0,0" >
+                                <ContentPresenter x:Name="ContentSite"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  ContentSource="Header"
+                                  Margin="12,2,12,2"
+                                  RecognizesAccessKey="True" />
+                              </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                              <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Panel.ZIndex" Value="100" />
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource TabBackgroundBrush}" />
+                                <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
+                                <Setter Property="Foreground" Value="White" />
+                              </Trigger>
+                              <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Foreground" Value="LightGray" />
+                              </Trigger>
+                            </ControlTemplate.Triggers>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>                    
+                  </ControlTemplate.Resources>
+                  
+                  
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
