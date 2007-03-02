@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace stickiesSpace
+namespace StickySpaces
 {
     class LauncherCommands
     {

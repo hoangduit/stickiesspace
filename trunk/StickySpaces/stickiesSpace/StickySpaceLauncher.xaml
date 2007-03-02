@@ -1,19 +1,8 @@
-﻿<Window x:Class="stickiesSpace.Window1"
+﻿<Window x:Class="StickySpaces.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:cc="http://schemas.ConceptualBridge.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="StickySpaces" Height="100" Width="300" 
-        ShowInTaskbar="False" 
-        WindowState="Normal" 
-        WindowStyle="None" 
-        AllowsTransparency="False"
-        Background="Transparent" 
-        Visibility="Collapsed" 
-        IsHitTestVisible="False" 
-        ContextMenuService.IsEnabled="False" 
-        IsEnabled="True" 
-        IsTabStop="False" 
-        WindowStartupLocation="CenterScreen">
+    Title="StickySpaces" Height="100" Width="300">
 
   <Window.Resources>
 

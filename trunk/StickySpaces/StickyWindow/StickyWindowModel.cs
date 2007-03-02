@@ -21,7 +21,7 @@ namespace StickyWindow
     public class StickyWindowModel : Window
     {
 
-        Uri iconUri = new Uri(@"pack://application:,,,/stickiesSpace;component/Resources/StickyIcon.ico");
+        Uri iconUri = new Uri(@"pack://application:,,,/StickySpaces;component/Resources/StickyIcon.ico");
         
 
         static StickyWindowModel()

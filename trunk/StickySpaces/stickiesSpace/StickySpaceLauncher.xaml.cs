@@ -21,7 +21,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 
 
-namespace stickiesSpace
+namespace StickySpaces
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -61,7 +61,7 @@ namespace stickiesSpace
         //}
         #endregion
 
-        static Uri iconUri = new Uri(@"pack://application:,,,/stickiesSpace;component/Resources/StickyIcon.ico");
+        static Uri iconUri = new Uri(@"pack://application:,,,/StickySpaces;component/Resources/StickyIcon.ico");
         static Stream iconStream = System.Windows.Application.GetResourceStream(iconUri).Stream;
 
         NotifyIcon notifyIcon;
@@ -147,7 +147,7 @@ namespace stickiesSpace
             this.notifyIcon = new NotifyIcon();
             this.notifyIcon.BalloonTipText = "Welcome to StickySpaces!";
             this.notifyIcon.Text = "StickySpaces";
-            
+
             this.notifyIcon.Icon = new Icon(iconStream);
             this.notifyIcon.Visible = true;
             this.notifyIcon.ShowBalloonTip(500);
