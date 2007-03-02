@@ -59,5 +59,12 @@ namespace stickiesSpace.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Icon StickySpaces {
+            get {
+                object obj = ResourceManager.GetObject("StickySpaces", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

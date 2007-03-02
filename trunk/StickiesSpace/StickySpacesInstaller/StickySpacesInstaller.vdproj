@@ -87,12 +87,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_556AD20DAA96423099376A46C13B2411"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_59FF5C47961A8199BD09BEF47C6C1F9C"
         "OwnerKey" = "8:_36590F8DB33E0E8E469D667DF7656175"
         "MsmSig" = "8:_UNDEFINED"
@@ -148,13 +142,13 @@
         "Entry"
         {
         "MsmKey" = "8:_B06182A7B8FABAA6467FA4027EB0D2A9"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B06182A7B8FABAA6467FA4027EB0D2A9"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -238,13 +232,13 @@
         "Entry"
         {
         "MsmKey" = "8:_C547CC4EEAEA55F686E22BAB474C218B"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_C547CC4EEAEA55F686E22BAB474C218B"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -280,13 +274,13 @@
         "Entry"
         {
         "MsmKey" = "8:_D04757A1E4E066E47A1635BCAA6847D6"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D04757A1E4E066E47A1635BCAA6847D6"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -316,13 +310,13 @@
         "Entry"
         {
         "MsmKey" = "8:_E584E884724743067F85FC6FA12693B8"
-        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
+        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_E584E884724743067F85FC6FA12693B8"
-        "OwnerKey" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
+        "OwnerKey" = "8:_245115FE48DA61FF25CA96C4F3B46A55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -768,26 +762,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_556AD20DAA96423099376A46C13B2411"
-            {
-            "SourcePath" = "8:..\\stickiesSpace\\StickyIconLikeWhoa.ico"
-            "TargetName" = "8:StickyIconLikeWhoa.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_59FF5C47961A8199BD09BEF47C6C1F9C"
             {
             "AssemblyRegister" = "3:1"
@@ -1223,7 +1197,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_556AD20DAA96423099376A46C13B2411"
+        "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1337,7 +1311,7 @@
             "Target" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
             "Folder" = "8:_4F15CAF66F72402486E398B7DC7C9C64"
             "WorkingFolder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
-            "Icon" = "8:_556AD20DAA96423099376A46C13B2411"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6D971E18F84B4D6489157C7BE6B30D50"
@@ -1351,7 +1325,7 @@
             "Target" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
             "Folder" = "8:_4C1A4A2A751A4F578FAFEA63C7810B7F"
             "WorkingFolder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
-            "Icon" = "8:_556AD20DAA96423099376A46C13B2411"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E45F70D46C204C2C83000E0C126F304A"
@@ -1365,7 +1339,7 @@
             "Target" = "8:_76D87347482B47D1AE8D2F0004F8AF89"
             "Folder" = "8:_608E026011F14EE7B2DCAF2259C897B6"
             "WorkingFolder" = "8:_F86020A2225A48FB9EDE51ECE57DAD61"
-            "Icon" = "8:_556AD20DAA96423099376A46C13B2411"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
