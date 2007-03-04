@@ -16,12 +16,6 @@
         "Entry"
         {
         "MsmKey" = "8:_037337420320D2706646B4B134376305"
-        "OwnerKey" = "8:_E0562CFB80A37846A1F831EF85219B2B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_037337420320D2706646B4B134376305"
         "OwnerKey" = "8:_A95C0F3B276D4EEEA2D57C3656E080B4"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -41,12 +35,6 @@
         {
         "MsmKey" = "8:_2015F841C120298AE4F37E5E4ECDE9F4"
         "OwnerKey" = "8:_A95C0F3B276D4EEEA2D57C3656E080B4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2015F841C120298AE4F37E5E4ECDE9F4"
-        "OwnerKey" = "8:_E0562CFB80A37846A1F831EF85219B2B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -220,12 +208,6 @@
         "Entry"
         {
         "MsmKey" = "8:_77AD4C5246631DB262F6AD59FF6F4CE6"
-        "OwnerKey" = "8:_E0562CFB80A37846A1F831EF85219B2B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_77AD4C5246631DB262F6AD59FF6F4CE6"
         "OwnerKey" = "8:_282FB9E5A79152D768D9FD45586C8A38"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -309,18 +291,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E0562CFB80A37846A1F831EF85219B2B"
-        "OwnerKey" = "8:_A95C0F3B276D4EEEA2D57C3656E080B4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F416DCD4D3CCB45DE735D9D37B59C514"
-        "OwnerKey" = "8:_E0562CFB80A37846A1F831EF85219B2B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_F416DCD4D3CCB45DE735D9D37B59C514"
         "OwnerKey" = "8:_A95C0F3B276D4EEEA2D57C3656E080B4"
         "MsmSig" = "8:_UNDEFINED"
@@ -347,12 +317,6 @@
         {
         "MsmKey" = "8:_F416DCD4D3CCB45DE735D9D37B59C514"
         "OwnerKey" = "8:_037337420320D2706646B4B134376305"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6EA1D5B0114F9385CED5205B6098AF7F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -395,12 +359,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_68718AF39112DEF193E6AE4C3DBE02B6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E0562CFB80A37846A1F831EF85219B2B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -451,6 +409,12 @@
         "OwnerKey" = "8:_2015F841C120298AE4F37E5E4ECDE9F4"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6EA1D5B0114F9385CED5205B6098AF7F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -469,6 +433,17 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                }
+            }
         }
         "Release"
         {
@@ -485,6 +460,17 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                }
+            }
         }
     }
     "Deployable"
@@ -968,37 +954,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E0562CFB80A37846A1F831EF85219B2B"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:StickyWindow, Version=1.0.2617.22949, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E0562CFB80A37846A1F831EF85219B2B"
-                    {
-                    "Name" = "8:StickyWindow.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:StickyWindow.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E6DB56D3B8B34249BEF5AE42A2398DF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F416DCD4D3CCB45DE735D9D37B59C514"
             {
             "AssemblyRegister" = "3:1"
@@ -1107,14 +1062,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:StickySpaces"
-        "ProductCode" = "8:{48BCE089-4A88-48DB-A12B-757CE7FF7A4E}"
-        "PackageCode" = "8:{EE69C947-F9C9-44E1-AAC8-CC142D3507ED}"
+        "ProductCode" = "8:{402A118C-6C7A-422B-8B87-1EC56205FEF9}"
+        "PackageCode" = "8:{9B7A9EE7-F7A7-4444-B696-EA7AE9893523}"
         "UpgradeCode" = "8:{B1C27313-CC7B-40D9-96A4-9F3CE0BA4384}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.2"
+        "ProductVersion" = "8:0.2.1"
         "Manufacturer" = "8:ConceptualBridge"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1710,6 +1665,9 @@
                 {
                 }
             }
+        }
+        "VJSharpPlugin"
+        {
         }
     }
 }
