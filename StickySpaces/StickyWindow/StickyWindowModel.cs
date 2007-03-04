@@ -35,11 +35,13 @@ namespace StickyWindow
             this.Name = String.Format("stickyWindow_{0}", DateTime.Now.Ticks.ToString());
             this.MinHeight = 50;
             this.MinWidth = 100;
+            this.MaxHeight = 600;
+            this.MaxWidth = 600;
             this.MyWindowState = WindowState.Normal;
             this.Background = Brushes.Transparent;
             this.AllowsTransparency = true;
             this.WindowStyle = WindowStyle.None;
-            this.Title = "This is the stickyWindow";
+            this.Title = "stickyWindow";
             this.ShowInTaskbar = false;
 
             IconBitmapDecoder icon = new IconBitmapDecoder(iconUri, BitmapCreateOptions.None, BitmapCacheOption.Default);
@@ -449,6 +451,8 @@ namespace StickyWindow
         {
             ToolTip noteToolTip = new ToolTip();
             noteToolTip.Content = new TextBlock(new Run(this.sTextArea.Text));
+            noteToolTip.MaxHeight = 600;
+            noteToolTip.MaxWidth = 600;
             noteToolTip.Visibility = Visibility.Visible;
             this.ToolTip = noteToolTip;
         }
@@ -498,7 +502,7 @@ namespace StickyWindow
                 {
                     case WindowState.Minimized:
                         animations.RestoreAnimation();
-                        this.ToolTip = null;
+                        this.ToolTip = new ToolTip();
                         break;
 
                     case WindowState.Normal:

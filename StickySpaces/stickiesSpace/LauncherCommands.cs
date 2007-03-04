@@ -34,8 +34,8 @@ namespace StickySpaces
             m2.Text = "New Sticky";
             m2.Click += new EventHandler(m2_Click);
 
-            menu.MenuItems.Add(m1);
             menu.MenuItems.Add(m2);
+            menu.MenuItems.Add(m1);
 
             return menu;
         }
