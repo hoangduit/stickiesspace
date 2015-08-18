@@ -1,0 +1,1 @@
+A WPF implementation of a desktop sticky notes app using only managed .Net 3.0 c#.
